@@ -1,0 +1,618 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Netlogo Simulation</title>
+    <!-- <link rel="icon" href="/static/img/Farm-Features.ico" type="image/x-icon"> -->
+    <link rel="icon" href="../static/img/Farm-Features.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://demo.voidcoders.com/htmldemo/fitgear/main-files/assets/css/animate.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='NetlogoInputV1.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="../static/NetlogoInputV1.css">
+    <style>
+        /* Center loader */
+        .loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        /* Blur the page */
+        .blur {
+            filter: blur(5px);
+            /* Adjust the blur amount as needed */
+            pointer-events: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="loader" class="loader"></div>
+    <section class="faq">
+
+        <div class="container">
+            <a href="/" class="back-link homepage-link">Homepage</a>
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8 text-center">
+                    <div class="section-title">
+                        <h1>Pre-configured Simulation Insights</h1>
+                        <p>View simulation results based on preset configurations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseOne" aria-expanded="false"
+                                                aria-controls="collapseOne">
+                                                Form related to Agriculture
+                                            </button>
+                                        </h5>
+                                    </div>
+
+                                    <!-- <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="AgricultureForm">
+                                                    <label for="corn_area">Corn Area:</label>
+                                                    <input type="number" id="corn_area" name="corn_area" value="200">
+                                                    <br>
+
+                                                    <label for="wheat_area">Wheat Area:</label>
+                                                    <input type="number" id="wheat_area" name="wheat_area" value="125">
+                                                    <br>
+
+                                                    <label for="soybeans_area">Soybeans Area:</label>
+                                                    <input type="number" id="soybeans_area" name="soybeans_area"
+                                                        value="0">
+                                                    <br>
+
+                                                    <label for="sg_area">SG Area:</label>
+                                                    <input type="number" id="sg_area" name="sg_area" value="125">
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <br>
+                                            <div>
+                                                <label for="corn_area_option">Options:</label>
+                                                <button id="buttonA1" style="margin-right: 5px;">A1</button>
+                                                <button id="buttonA2">A2</button>
+                                            </div>
+
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="AgricultureForm">
+                                                    <label for="corn_area">Corn Area:</label>
+                                                    <select id="corn_area" name="corn_area">
+                                                        <!-- <option value="0">0</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option> -->
+                                                        <option value="150">150</option>
+                                                        <!-- <option value="150">150</option>
+                                                        <option value="175">175</option> -->
+                                                        <option value="500" selected>500</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="wheat_area">Wheat Area:</label>
+                                                    <select id="wheat_area" name="wheat_area">
+                                                        <!-- <option value="0">0</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option> -->
+                                                        <option value="125" selected>125</option>
+                                                        <!-- <option value="150">150</option>
+                                                        <option value="175">175</option> -->
+                                                        
+                                                    
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="soybeans_area">Soybeans Area:</label>
+                                                    <select id="soybeans_area" name="soybeans_area">
+                                                        <option value="0" selected>0</option>
+                                                        <!-- <option value="50">50</option>
+                                                        <option value="100">100</option> -->
+                                                        <!-- <option value="125">125</option> -->
+                                                        <!-- <option value="150">150</option>
+                                                        <option value="175">175</option> -->
+                                                        <option value="200">200</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="sg_area">SG Area:</label>
+                                                    <select id="sg_area" name="sg_area">
+                                                        <!-- <option value="0">0</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option> -->
+                                                        <option value="125" selected>125</option>
+                                                        <!-- <option value="150">150</option>
+                                                        <option value="175">175</option> -->
+                                                        <option value="200">200</option>
+                                                    </select>
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                Form related to Energy
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="EnergyForm">
+                                                    <label for="energy_value">Energy Value ($/MWh):</label>
+                                                    <select id="energy_value" name="energy_value">
+                                                        <option value="38.0">38.0</option>
+                                                        <option value="50.0">50.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="loan_term">Loan Term:</label>
+                                                    <select id="loan_term" name="loan_term">
+                                                        <option value="1.0">1.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="interest">Interest (%):</label>
+                                                    <select id="interest" name="interest">
+                                                        <option value="2.0">2.0</option>
+                                                        <option value="10.0">10.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="num_wind_turbines">Number of Wind Turbines:</label>
+                                                    <select id="num_wind_turbines" name="num_wind_turbines">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="nyear_w">Number of years (Wind):</label>
+                                                    <select id="nyear_w" name="nyear_w">
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="capacity_w">Capacity (Wind) (MW):</label>
+                                                    <select id="capacity_w" name="capacity_w">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="cost_w">Cost (Wind) ($/kW):</label>
+                                                    <select id="cost_w" name="cost_w">
+                                                        <option value="1470">1470</option>
+                                                        <option value="2500">2500</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="degrade_w">Degrade (Wind) (%/Yr):</label>
+                                                    <select id="degrade_w" name="degrade_w">
+                                                        <option value="1.0">1.0</option>
+                                                        <option value="2.0">2.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="wind_factor">Wind Factor (%):</label>
+                                                    <select id="wind_factor" name="wind_factor">
+                                                        <option value="42">42</option>
+                                                        <option value="60">60</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="num_panel_sets">Number of Panel Sets (1 set = 1,000
+                                                        panels):</label>
+                                                    <select id="num_panel_sets" name="num_panel_sets">
+                                                        <option value="3">3</option>
+                                                        <option value="8">8</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="nyear_s">Number of years (Solar) (Yrs):</label>
+                                                    <select id="nyear_s" name="nyear_s">
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="cost_s">Cost (Solar) ($/kW):</label>
+                                                    <select id="cost_s" name="cost_s">
+                                                        <option value="1750">1750</option>
+                                                        <option value="4000">4000</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="capacity_s">Capacity (Solar) (W):</label>
+                                                    <select id="capacity_s" name="capacity_s">
+                                                        <option value="250">250</option>
+                                                        <option value="300">300</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="degrade_s">Degrade (Solar) (%/yr):</label>
+                                                    <select id="degrade_s" name="degrade_s">
+                                                        <option value="0.5">0.5</option>
+                                                        <option value="1.0">1.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="sun_hrs">Sun Hours (hrs/day):</label>
+                                                    <select id="sun_hrs" name="sun_hrs">
+                                                        <option value="5.6">5.6</option>
+                                                        <option value="8.0">8.0</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="ptc_w">PTC (Wind) ($/kWh):</label>
+                                                    <select id="ptc_w" name="ptc_w">
+                                                        <option value="0.000">0.000</option>
+                                                        <option value="0.030">0.030</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="itc_s">ITC (Solar) (%):</label>
+                                                    <select id="itc_s" name="itc_s">
+                                                        <option value="0">0</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="ptc_s">PTC (Solar) ($/kWh):</label>
+                                                    <select id="ptc_s" name="ptc_s">
+                                                        <option value="0.000">0.000</option>
+                                                        <option value="0.030">0.030</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <!-- <input type="submit" value="Calculate"> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseThree" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                Form related to Climate
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <form action="/calculate" method="post" id="climateForm">
+                                                    <label for="future_processes">Future Process:</label>
+                                                    <select id="future_processes" name="future_processes">
+                                                        <option value="Repeat Historical">Repeat Historical</option>
+                                                        <option value="Wetter Future">Wetter Future</option>
+                                                        <option value="Dryer Future">Dryer Future</option>
+                                                        <option value="GCM">GCM</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="climate_model">Climate Model:</label>
+                                                    <select id="climate_model" name="climate_model">
+                                                        <option value="RCP4.5">RCP4.5</option>
+                                                        <option value="RCP8.5">RCP8.5</option>
+                                                    </select>
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapseThree" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                Form related to Climate
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <form action="/calculate" method="post" id="climateForm">
+                                                    <label for="future_processes">Future Process:</label>
+                                                    <select id="future_processes" name="future_processes">
+                                                        <option value="Repeat Historical">Repeat Historical</option>
+                                                        <option value="Wetter Future">Wetter Future</option>
+                                                        <option value="Dryer Future">Dryer Future</option>
+                                                        <option value="GCM">GCM</option>
+                                                    </select>
+                                                    <br>
+
+                                                    <label for="climate_model">Climate Model:</label>
+                                                    <select id="climate_model" name="climate_model" disabled>
+                                                        <option value="RCP4.5">RCP4.5</option>
+                                                        <option value="RCP8.5">RCP8.5</option>
+                                                    </select>
+                                                    <br>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapse4" aria-expanded="false" aria-controls="collapseThree">
+                                                Where can I get some?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse4" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapse5" aria-expanded="false"
+                                                aria-controls="collapseOne">
+                                                Form related to Water
+                                            </button>
+                                        </h5>
+                                    </div>
+
+                                    <!-- <div id="collapse5" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="IrrigationForm">
+                                                    <label for="aquifier_level">Aquifier Level:</label>
+                                                    <input type="number" id="aquifier_level" name="aquifier_level"
+                                                        value="200">
+                                                    <br>
+
+                                                    <label for="min_aquifier_level">Min. Aquifier Level:</label>
+                                                    <input type="number" id="min_aquifier_level"
+                                                        name="min_aquifier_level" value="125">
+                                                    <br>
+                                                     <input type="submit" value="Calculate"> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+
+                                    <div id="collapse5" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="IrrigationForm">
+                                                    <label for="aquifier_level">Aquifer Level (ft):</label>
+                                                    <select id="aquifier_level" name="aquifier_level">
+                                                        <!-- <option value="0">0</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                        <option value="125">125</option>
+                                                        <option value="150">150</option>
+                                                        <option value="175">175</option> -->
+                                                        <option value="200" selected>200</option>
+                                                        <option value="300">300</option>
+                                                    </select>
+                                                    <br>
+                                                    <label for="min_aquifier_level">Min. Aquifer Level (ft):</label>
+                                                    <select id="min_aquifier_level" name="min_aquifier_level">
+                                                        <option value="30" selected>30</option>
+                                                        <option value="50">50</option>
+                                                        <!-- <option value="100">100</option>
+                                                        <option value="125" selected>125</option>
+                                                        <option value="150">150</option>
+                                                        <option value="175">175</option>
+                                                        <option value="200">200</option> -->
+                                                    </select>
+                                                    <br>
+                                                    <!-- <input type="submit" value="Calculate"> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapse6" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                Form Related To Ammonia (NH3)
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse6" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/download-csv" method="GET" id="DownloadAmmoniaCSV">
+                                                    <input type="submit" value="Download CSV" id="download-button">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                data-target="#collapse7" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                Run Simulation
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse7" class="collapse" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="form-container">
+                                                <a href="/" class="back-link"></a>
+                                                <form action="/calculate" method="POST" id="NumberOfYears"></form>
+                                                <label for="input_start_of_years" id="start_year_label"
+                                                    style="display: none;">Enter Start Year:</label>
+                                                <input type="number" id="input_start_of_years"
+                                                    name="input_start_of_years" style="display: none;" value="2008">
+
+                                                <!-- <label for="num_of_years">Number of Years:</label>
+													<input type="range" id="num_of_years" name="num_of_years" min="99" max="99" value="99">
+													<br>
+													<span id="slider-value">99</span> -->
+
+                                                <label for="num_of_years">Number of Years:</label>
+                                                <input type="range" id="num_of_years" name="num_of_years" min="1"
+                                                    max="99" value="99" disabled>
+                                                <br>
+                                                <span id="slider-value">99</span>
+                                                <br>
+                                                <br>
+                                                <input type="submit" value="Calculate" id="calculate-button">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+          
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- <iframe src="/ChartWindow" width="100%" height="900" frameborder="0"></iframe> -->
+    <iframe src="../template/ChartWindow.html" width="100%" height="900" frameborder="0"></iframe>
+    <script src='https://code.jquery.com/jquery-2.1.0.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+    <!-- <script src="{{ url_for('static', filename='NetlogoInputV1.js') }}"></script> -->
+    <script src="../static/NetlogoInputV1.js"></script>
+    <script>
+        // Update the displayed value to 99
+        document.getElementById("slider-value").innerText = "99";
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var futureProcessesSelect = document.getElementById('future_processes');
+            var climateModelSelect = document.getElementById('climate_model');
+
+            futureProcessesSelect.addEventListener('change', function () {
+                if (this.value === 'GCM') {
+                    climateModelSelect.removeAttribute('disabled');
+                } else {
+                    climateModelSelect.setAttribute('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var slider = document.getElementById("num_of_years");
+            var output = document.getElementById("slider-value");
+
+            // Display the initial value
+            output.innerHTML = slider.value;
+
+            // Set the position of the slider pointer
+            slider.addEventListener("input", function () {
+                output.innerHTML = this.value;
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('buttonA1').addEventListener('click', function () {
+            document.getElementById('corn_area').value = 500;
+            document.getElementById('wheat_area').value = 125;
+            document.getElementById('soybeans_area').value = 0;
+            document.getElementById('sg_area').value = 125;
+            highlightButton('buttonA1');
+        });
+
+        document.getElementById('buttonA2').addEventListener('click', function () {
+            document.getElementById('corn_area').value = 150;
+            document.getElementById('wheat_area').value = 200;
+            document.getElementById('soybeans_area').value = 200;
+            document.getElementById('sg_area').value = 200;
+            highlightButton('buttonA2');
+        });
+
+        function highlightButton(selectedButtonId) {
+            document.getElementById('buttonA1').style.backgroundColor = selectedButtonId === 'buttonA1' ? '#FF69B4' : '';
+            document.getElementById('buttonA2').style.backgroundColor = selectedButtonId === 'buttonA2' ? '#FF69B4' : '';
+        }
+
+        // Initialize the highlighted button based on the initial values
+        window.onload = function () {
+            if (document.getElementById('corn_area').value == 500) {
+                highlightButton('buttonA1');
+            } else {
+                highlightButton('buttonA2');
+            }
+        }
+
+        // Add hover effect using inline styles
+        document.getElementById('buttonA1').addEventListener('mouseover', function () {
+            if (document.getElementById('buttonA1').style.backgroundColor !== '#FF69B4') {
+                document.getElementById('buttonA1').style.backgroundColor = 'lightgray';
+            }
+        });
+        document.getElementById('buttonA2').addEventListener('mouseover', function () {
+            if (document.getElementById('buttonA2').style.backgroundColor !== '#FF69B4') {
+                document.getElementById('buttonA2').style.backgroundColor = 'lightgray';
+            }
+        });
+    </script>
+</body>
+
+</html>
