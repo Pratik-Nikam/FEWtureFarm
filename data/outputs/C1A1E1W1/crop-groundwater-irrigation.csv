@@ -1,10 +1,10 @@
 "export-plot data (NetLogo 6.3.0)"
 "FEWCalc_Export_Test.nlogo"
-"06/10/2024 11:27:30:337 -0500"
+"06/10/2024 11:32:32:101 -0500"
 
 "MODEL SETTINGS"
 "interest","energy_value","climate_model","capacity_s","corn_area","cost_s","degrade_s","nyear_w","#wind_turbines","loan_term","simulation_period","future_process","sun_hrs","ptc_w","soybeans_area","aquifer_thickness","wheat_area","min_aq_thickness","nyear_s","capacity_w","#panel_sets","cost_w","sg_area","wind_factor","degrade_w","itc_s","ptc_s"
-"3","38","""RCP4.5""","250","200","1750","1","30","4","1","90","""Repeat Historical""","6","0.003","0","300","125","30","25","2","8","1470","125","25","1","30","0.003"
+"3","38","""RCP4.5""","250","500","1750","1","30","4","1","90","""Repeat Historical""","6","0.003","0","300","125","30","25","2","8","1470","125","25","1","30","0.003"
 
 """Crop Groundwater Irrigation"""
 "x min","x max","y min","y max","autoplot?","current pen","legend open?","number of pens"
@@ -93,8 +93,8 @@
 "72","9","42.5","true","72","9","24","true","72","0","53","true","72","18","32","true"
 "73","18","42.5","true","73","18","24","true","73","0","53","true","73","27","32","true"
 "74","23","42.5","true","74","12","24","true","74","0","53","true","74","33","32","true"
-"75","0","42.5","true","75","0","24","true","75","0","53","true","75","0","32","true"
-"76","0","42.5","true","76","0","24","true","76","0","53","true","76","0","32","true"
+"75","24","42.5","true","75","18","24","true","75","0","53","true","75","32","32","true"
+"76","18","42.5","true","76","15","24","true","76","0","53","true","76","23","32","true"
 "77","0","42.5","true","77","0","24","true","77","0","53","true","77","0","32","true"
 "78","0","42.5","true","78","0","24","true","78","0","53","true","78","0","32","true"
 "79","0","42.5","true","79","0","24","true","79","0","53","true","79","0","32","true"

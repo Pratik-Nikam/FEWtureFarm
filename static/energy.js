@@ -108,8 +108,8 @@ function drawEnergyChart() {
     const key = sessionStorage.getItem("combination");
 
     // Construct the URLs dynamically using the key
-    const energyProductionUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/farm-energy-production.csv`;
-    const energyIncomeUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/energy-net-income.csv`;
+    const energyProductionUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/farm-energy-production.csv`;
+    const energyIncomeUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/energy-net-income.csv`;
 
     // Fetch and parse CSV data for energy production and income
     fetchAndParseCSV(energyProductionUrl, parseEnergyProductionData, (EnergyProductionData) => {

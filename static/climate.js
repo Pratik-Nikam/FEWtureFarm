@@ -96,8 +96,8 @@ function drawFarmChart() {
     const key = sessionStorage.getItem("combination");
 
     // Construct the URLs dynamically using the key
-    const farmNetIncomeURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/total-net-income.csv";
-    const farmInsuranceURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/income-from-crop-insurance.csv";    
+    const farmNetIncomeURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/total-net-income.csv";
+    const farmInsuranceURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/income-from-crop-insurance.csv";    
 
     // Fetch and parse data for farm net income and crop insurance income
     fetchAndParseCSV(farmNetIncomeURL, parseNetNetIncomeData, (netNetIncomeData) => {

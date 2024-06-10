@@ -109,8 +109,8 @@ function drawWaterChart() {
     const key = sessionStorage.getItem("combination");
 
     // Construct the URLs dynamically using the key
-    const cgwURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/crop-groundwater-irrigation.csv`;
-    const cgwlURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/groundwater-level.csv`;
+    const cgwURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/crop-groundwater-irrigation.csv`;
+    const cgwlURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/groundwater-level.csv`;
 
     // Fetch and parse crop ground water data
     fetchAndParseCSV(cgwURL, parseCropGroundWaterData, (parseCGWData) => {

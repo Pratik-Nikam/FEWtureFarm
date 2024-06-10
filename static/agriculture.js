@@ -107,8 +107,8 @@ function getCurrentDateTime() {
 // Function to draw agriculture chart
 function drawAgricultureChart() {
     key = sessionStorage.getItem("combination")
-    const cropProductionUrl = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/crop-production.csv";
-    const netIncomeUrl = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/ag-net-income.csv";
+    const cropProductionUrl = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/crop-production.csv";
+    const netIncomeUrl = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W1/ag-net-income.csv";
 
     // Fetch and parse crop production data
     fetchAndParseCSV(cropProductionUrl, parseData, (parsedCropData) => {
