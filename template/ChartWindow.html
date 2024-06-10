@@ -1,65 +1,47 @@
-<!-- <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Visualization</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700i" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'> -->
-
-
-<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ChartWindow.css') }}"> -->
-
-<!-- <link rel="stylesheet" type="text/css" href="../static/ChartWindow.css">
-
-</head>
-<body>
-<div class="container">
-  <div class="button-effect">
-     <h1>"Charts"</h1>
-     <a class="effect effect-5" href="../static/agriculture.js" title="Click Here to View Agriculture Charts">Agriculture</a>
-     <a class="effect effect-5" href="../static/water.js" title="Click Here to View Water Charts" >Water</a>
-     <a class="effect effect-5" href="../static/energy.js" title="Click Here to View Energy Charts" >Energy</a>
-     <a class="effect effect-5" href="../static/climate.js" title="Click Here to View Total Farm Net Income Charts"> Farm Net Income</a>
-     <a class="effect effect-5" href="../static/allchart.js" title="Click Here to View ALI Charts">All Charts</a>
-  </div>
-</div>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Visualization</title>
+  <!-- Link to favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Importing fonts -->
   <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700i" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <!-- Resetting default styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <!-- Importing font-awesome icons -->
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <!-- Link to the CSS file for styling the Chart Window page -->
   <link rel="stylesheet" type="text/css" href="../static/ChartWindow.css">
+  <!-- Including necessary JavaScript libraries -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <!-- Link to the JavaScript files that handle specific charts functionalities -->
   <script src="../static/agriculture.js"></script>
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js></script>
+  <script src="../static/water.js"></script>
+  <script src="../static/energy.js"></script>
+  <script src="../static/climate.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="button-effect">
       <h1>"Charts"</h1>
-      <!-- <button class="effect effect-5" onclick="drawAgricultureCharts()" title="Click Here to View Agriculture Charts">Agriculture</button> -->
-      
-      <a class="effect effect-5" id="drawChartsButton" onclick="drawAgricultureChart()"  title="Click Here to View Agriculture Charts">Agriculture</a>
-      <a class="effect effect-5" href="../static/water.js" title="Click Here to View Water Charts">Water</a>
-      <a class="effect effect-5" href="../static/energy.js" title="Click Here to View Energy Charts">Energy</a>
-      <a class="effect effect-5" href="../static/climate.js" title="Click Here to View Total Farm Net Income Charts"> Farm Net Income</a>
+      <!-- Button to load Agriculture charts -->
+      <a class="effect effect-5" onclick="drawAgricultureChart()" title="Click Here to View Agriculture Charts">Agriculture</a>
+      <!-- Button to load Water charts -->
+      <a class="effect effect-5" onclick="drawWaterChart()" title="Click Here to View Water Charts">Water</a>
+      <!-- Button to load Energy charts -->
+      <a class="effect effect-5" onclick="drawEnergyChart()" title="Click Here to View Energy Charts">Energy</a>
+      <!-- Button to load Farm Net Income charts -->
+      <a class="effect effect-5" onclick="drawFarmChart()" title="Click Here to View Total Farm Net Income Charts">Farm Net Income</a>
+      <!-- Link to view all charts -->
       <a class="effect effect-5" href="../static/allchart.js" title="Click Here to View ALI Charts">All Charts</a>
     </div>
+    <!-- Containers for displaying charts -->
     <div id="chart1"></div>
     <div id="chart2"></div>
   </div>
 </body>
 </html>
-

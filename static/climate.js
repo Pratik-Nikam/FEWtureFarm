@@ -1,123 +1,196 @@
-// Generate Current Date and TIme
-function getCurrentDateTime() {
-    const months = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
+// Function to parse data for net net income
+function parseNetNetIncomeData(csvData) {
+    const lines = csvData.trim().split('\n');
+    const cropsDataLines = lines.slice(19); // Remove the first 19 lines
+    const data = {
+        crop: [],
+        energy: [],
+        all: []
+    };
 
-    const now = new Date();
-    const day = now.getDate().toString().padStart(2, '0');
-    const month = months[now.getMonth()];
-    const year = now.getFullYear();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
+    // Extract column names
+    const columnNames = cropsDataLines[0].split(',');
+    // Find indices of columns for each category
+    const cropYIndex = columnNames.indexOf('"y"');
+    const energyYIndex = columnNames.indexOf('"y"', cropYIndex + 1);
+    const allYIndex = columnNames.indexOf('"y"', energyYIndex + 1);
+    
+    // Parse data for each line
+    for (let i = 1; i < cropsDataLines.length; i++) {
+        const line = cropsDataLines[i];
+        const values = line.split(',');
+        const cropY = parseFloat(values[cropYIndex].replace(/"/g, ''));
+        const energyY = parseFloat(values[energyYIndex].replace(/"/g, ''));
+        const allY = parseFloat(values[allYIndex].replace(/"/g, ''));
 
-    const formattedDateTime = `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
-    return formattedDateTime;
+        // Push data for each category
+        data.crop.push(cropY);
+        data.energy.push(energyY);
+        data.all.push(allY);
+    }
+    console.log(data);
+    
+    return data;
 }
 
+// Function to parse data for crop insurance income
+function parseCropInsuranceIncomeData(csvData) {
+    const lines = csvData.trim().split('\n');
+    const cropsDataLines = lines.slice(19); // Remove the first 19 lines
+    const data = {
+        Corn: [],
+        Wheat: [],
+        Soybeans: [],
+        SG: []
+    };
 
+    // Extract column names
+    const columnNames = cropsDataLines[0].split(',');
+    // Find indices of columns for each crop
+    const cornYIndex = columnNames.indexOf('"y"');
+    const wheatYIndex = columnNames.indexOf('"y"', cornYIndex + 1);
+    const soybeansYIndex = columnNames.indexOf('"y"', wheatYIndex + 1);
+    const sgYIndex = columnNames.indexOf('"y"', soybeansYIndex + 1);
 
+    // Parse data for each line
+    for (let i = 1; i < cropsDataLines.length; i++) {
+        const line = cropsDataLines[i];
+        const values = line.split(',');
+        const cornY = parseFloat(values[cornYIndex].replace(/"/g, ''));
+        const wheatY = parseFloat(values[wheatYIndex].replace(/"/g, ''));
+        const soybeansY = parseFloat(values[soybeansYIndex].replace(/"/g, ''));
+        const sgY = parseFloat(values[sgYIndex].replace(/"/g, ''));
 
-function drawCharts() {
-    fetch('/calculateClimate')
-        .then(response => response.json())
-        .then(data => {
-            const getCropIncomeData = JSON.parse(data.crop_income_img);
-            const getCropInsuranceData = JSON.parse(data.insur_income_img);
-
-            const cropIncomeTitle = getCropIncomeData.Crop_Income.total_farm_net_income;
-            console.log(cropIncomeTitle)
-            const cropInsuranceTitle = getCropInsuranceData.Insurance_Income.total_income_from_crop_insurance;
-            console.log(cropInsuranceTitle)
-
-            const years = getCropIncomeData.Crop_Income.Year.map(Number);
-            const cropData = getCropIncomeData.Crop_Income.Crop.map(Number);
-            const energyData = getCropIncomeData.Crop_Income.Energy.map(Number);
-            const allData = getCropIncomeData.Crop_Income.All.map(Number);
-            const usData =  getCropIncomeData.Crop_Income.US$0.map(Number);
+        // Push data for each crop
+        data.Corn.push(cornY);
+        data.Wheat.push(wheatY);
+        data.Soybeans.push(soybeansY);
+        data.SG.push(sgY);
+    }
     
-            const year = getCropInsuranceData.Insurance_Income.Year.map(Number);
-            const CornData = getCropInsuranceData.Insurance_Income.Corn.map(Number);
-            const WheatData = getCropInsuranceData.Insurance_Income.Wheat.map(Number);
-            const SoyaData = getCropInsuranceData.Insurance_Income.Soybean.map(Number);
-            const getsgData = getCropInsuranceData.Insurance_Income.SG.map(Number);
+    return data;
+}
 
-            // Create the first Highcharts chart for farmEnergyProduction
-            Highcharts.chart('chart1', {
-                title: {
-                    text: cropIncomeTitle,
-
-                },
-                xAxis: {
-                    categories: years,
-                    title: {
-                        text: '<b>Year since the beginning of the simulation</b>',
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: '<b>Total Net Income ($) </b>',
-                    },
-                },
-                series: [
-                    { name: 'Crop', data: cropData, color: 'red'},
-                    { name: 'Energy', data: energyData, color: 'green'},
-                    { name: 'All', data: allData, color: 'blue'},
-                    // { name: 'US$', data: usData, color: 'orange'}
-                ],
-                // Add exporting options
-                exporting: {
-                    filename: `TotalFarmNetIncome_${getCurrentDateTime()}`,
-                    buttons: {
-                        contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
-                        },
-                    },
-                },
-            });
-
-            // Create the second Highcharts chart for energyNetIncomeCalculation
-            Highcharts.chart('chart2', {
-                chart: {
-                    type: 'scatter', 
-                },
-                title: {
-                    text: cropInsuranceTitle,
-                },
-                xAxis: {
-                    categories: year,
-                    title: {
-                        text: '<b>Year since the beginning of the simulation</b>',
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: '<b>Income from Crop Insurance ($)</b>',
-                    },
-                },
-                series: [
-                    { name: 'Corn', data: CornData, color: 'red'},
-                    { name: 'Wheat', data: WheatData, color: 'green'},
-                    { name: 'Soybeans', data: SoyaData, color: 'blue'},
-                    { name: 'SG', data: getsgData, color: 'yellow'}
-                ],
-                // Add exporting options
-                exporting: {
-                    filename: `TotalIncomeFromCropInsurance_${getCurrentDateTime()}`,
-                    buttons: {
-                        contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
-                        },
-                    },
-                },
-            });
+// Function to fetch and parse CSV data
+function fetchAndParseCSV(url, parser, callback) {
+    fetch(url)
+        .then(response => response.text())
+        .then(csvText => {
+            const parsedData = parser(csvText);
+            callback(parsedData);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error fetching or parsing CSV:', error);
         });
 }
 
-// Call the drawCharts function when the page loads
-document.addEventListener('DOMContentLoaded', drawCharts);
+// Function to show model popup
+function showModelPopup() {
+    alert("Please calculate the model first.");
+    // You can replace alert with a custom modal popup if needed
+}
+
+// Function to draw farm chart
+function drawFarmChart() {
+    // Retrieve the key from sessionStorage
+    const key = sessionStorage.getItem("combination");
+
+    // Construct the URLs dynamically using the key
+    const farmNetIncomeURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/total-net-income.csv";
+    const farmInsuranceURL = "https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/C1A1E1W2/income-from-crop-insurance.csv";    
+
+    // Fetch and parse data for farm net income and crop insurance income
+    fetchAndParseCSV(farmNetIncomeURL, parseNetNetIncomeData, (netNetIncomeData) => {
+        fetchAndParseCSV(farmInsuranceURL, parseCropInsuranceIncomeData, (cropInsuranceIncomeData) => {
+            drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData);
+        });
+    });
+}
+
+// Function to draw farm charts
+function drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData) {
+    console.log(netNetIncomeData);
+    console.log(cropInsuranceIncomeData);
+
+    // Extract years assuming data is yearly and starts from year 1
+    const years = Array.from(Array(netNetIncomeData.crop.length).keys());
+    const cropData = netNetIncomeData.crop;
+    const energyData = netNetIncomeData.energy;
+    const allData = netNetIncomeData.all;
+
+    console.log(cropInsuranceIncomeData);
+    const insuranceYears = Array.from(Array(cropInsuranceIncomeData.Corn.length).keys());
+    const cornData = cropInsuranceIncomeData.Corn;
+    const wheatData = cropInsuranceIncomeData.Wheat;
+    const soybeansData = cropInsuranceIncomeData.Soybeans;
+    const sgData = cropInsuranceIncomeData.SG;
+
+    // Create the first Highcharts chart for farmNetIncome
+    Highcharts.chart('chart1', {
+        title: {
+            text: 'Total Farm Net Income',
+        },
+        xAxis: {
+            categories: years,
+            title: {
+                text: '<b>Year since the beginning of the simulation</b>',
+            },
+        },
+        yAxis: {
+            title: {
+                text: '<b>Total Net Income ($)</b>',
+            },
+        },
+        series: [
+            { name: 'Crop', data: cropData, color: 'red' },
+            { name: 'Energy', data: energyData, color: 'green' },
+            { name: 'All', data: allData, color: 'blue' },
+        ],
+        // Add exporting options
+        exporting: {
+            filename: `TotalFarmNetIncome_${getCurrentDateTime()}`,
+            buttons: {
+                contextButton: {
+                    menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
+                },
+            },
+        },
+    });
+
+    // Create the second Highcharts chart for cropInsuranceIncome
+    Highcharts.chart('chart2', {
+        chart: {
+            type: 'scatter',
+        },
+        title: {
+            text: 'Total Income from Crop Insurance',
+        },
+        xAxis: {
+            categories: insuranceYears,
+            title: {
+                text: '<b>Year since the beginning of the simulation</b>',
+            },
+        },
+        yAxis: {
+            title: {
+                text: '<b>Income from Crop Insurance ($)</b>',
+            },
+        },
+        series: [
+            { name: 'Corn', data: cornData, color: 'red' },
+            { name: 'Wheat', data: wheatData, color: 'green' },
+            { name: 'Soybeans', data: soybeansData, color: 'blue' },
+            { name: 'SG', data: sgData, color: 'yellow' }
+        ],
+        // Add exporting options
+        exporting: {
+            filename: `TotalIncomeFromCropInsurance_${getCurrentDateTime()}`,
+            buttons: {
+                contextButton: {
+                    menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
+                },
+            },
+        },
+    });
+}
+

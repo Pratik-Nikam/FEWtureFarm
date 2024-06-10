@@ -1,272 +1,301 @@
+/* Setting text color for heading elements from h1 to h6 */
 h1, h2, h3, h4, h5, h6 {
-    color: #ff008b;
+  color: #ff008b;
 }
+
+/* Adding padding to all sections */
 section {
-    padding: 60px;
+  padding: 60px;
 }
+
+/* Removing default text decoration and outline for anchor elements */
 a, a:hover, a:focus, a:active {
-    text-decoration: none;
-    outline: none;
+  text-decoration: none;
+  outline: none;
 }
+
+/* Removing default margin, padding, and list style for unordered lists */
 ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+
+/* Styling for frequently asked questions section */
 .faq {
-    padding: 120px 0 90px;
-    background: #f7fbff;
+  padding: 120px 0 90px; /* Top padding 120px, bottom padding 90px */
+  background: #f7fbff; /* Background color for the FAQ section */
 }
 
+/* Styling for the title within the FAQ section */
 .faq .section-title {
-    margin-bottom: 54px;
+  margin-bottom: 54px; /* Bottom margin for the section title */
 }
 
+/* Styling for the heading 2 within the FAQ section */
 .faq .section-title h2 {
-    margin-bottom: 22px;
+  margin-bottom: 22px; /* Bottom margin for the h2 within the section title */
 }
 
+/* Styling for each accordion card within the FAQ section */
 .faq .accordion .card {
-    border: none;
-    margin-bottom: 30px;
+  border: none; /* Removing border for the card */
+  margin-bottom: 30px; /* Bottom margin for the card */
 }
 
+/* Styling for the first accordion card within the FAQ section */
 .faq .accordion .card:not(:first-of-type) .card-header:first-child {
-    border-radius: 10px;
+  border-radius: 10px; /* Adding border radius to top left and top right corners for non-first cards */
 }
 
+/* Styling for the card header within each accordion card */
 .faq .accordion .card .card-header {
-    border: none;
-    border-radius: 10px;
-    padding: 0;
+  border: none; /* Removing border for the card header */
+  border-radius: 10px; /* Adding border radius to all corners for the card header */
+  padding: 0; /* Removing padding for the card header */
 }
 
+/* Styling for the heading 5 within the card header */
 .faq .accordion .card .card-header h5 {
-    padding: 0;
+  padding: 0; /* Removing padding for the h5 within the card header */
 }
 
+/* Styling for the button within the heading 5 within the card header */
 .faq .accordion .card .card-header h5 button {
-    color: #1e3056;
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 0 30px 0 70px;
-    height: 80px;
-    display: block;
-    width: 100%;
-    color: rgba(30, 48, 86, 0.8);
-    text-align: left;
-    background: #fff;
-    -webkit-box-shadow: 0px -50px 140px 0px rgba(69, 81, 100, 0.1);
-    box-shadow: 0px -50px 140px 0px rgba(69, 81, 100, 0.1);
-    border-radius: 10px 10px 0 0;
-    position: relative;
+  color: #1e3056; /* Text color for the button */
+  font-size: 18px; /* Font size for the button */
+  font-weight: 500; /* Font weight for the button */
+  text-decoration: none; /* Removing text decoration for the button */
+  padding: 0 30px 0 70px; /* Padding for the button */
+  height: 80px; /* Height for the button */
+  display: block; /* Making the button a block element */
+  width: 100%; /* Width for the button */
+  color: rgba(30, 48, 86, 0.8); /* Text color for the button */
+  text-align: left; /* Text alignment for the button */
+  background: #fff; /* Background color for the button */
+  box-shadow: 0px -50px 140px 0px rgba(69, 81, 100, 0.1); /* Box shadow for the button */
+  border-radius: 10px 10px 0 0; /* Border radius for the button */
+  position: relative; /* Positioning the button relatively */
 }
 
+/* Styling for the icon after the button within the card header */
 .faq .accordion .card .card-header h5 button:after {
-    position: absolute;
-    left: 30px;
-    top: 50%;
-    margin-top: -10px;
-    width: 20px;
-    height: 20px;
-    background-color: transparent;
-    color: #ff5f74;
-    text-align: center;
-    border: 1px solid #ff5f74;
-    border-radius: 50%;
-    line-height: 100%;
-    content: '\f067';
-    font-size: 10px;
-    line-height: 18px;
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
+  position: absolute; /* Positioning the icon absolutely */
+  left: 30px; /* Left position for the icon */
+  top: 50%; /* Top position for the icon */
+  margin-top: -10px; /* Adjusting top margin for centering */
+  width: 20px; /* Width for the icon */
+  height: 20px; /* Height for the icon */
+  background-color: transparent; /* Background color for the icon */
+  color: #ff5f74; /* Text color for the icon */
+  text-align: center; /* Text alignment for the icon */
+  border: 1px solid #ff5f74; /* Border for the icon */
+  border-radius: 50%; /* Border radius for the icon */
+  line-height: 100%; /* Line height for the icon */
+  content: '\f067'; /* Content for the icon (Font Awesome) */
+  font-size: 10px; /* Font size for the icon */
+  line-height: 18px; /* Line height for the icon */
+  font-family: "Font Awesome 5 Free"; /* Font family for the icon */
+  font-weight: 900; /* Font weight for the icon */
 }
 
+/* Styling for the collapsed state of the button within the card header */
 .faq .accordion .card .card-header h5 button.collapsed {
-    background: #fff;
-    border-radius: 10px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid rgba(97, 125, 255, 0.2);
+  background: #fff; /* Background color for the collapsed button */
+  border-radius: 10px; /* Border radius for the collapsed button */
+  box-shadow: none; /* Removing box shadow for the collapsed button */
+  border: 1px solid rgba(97, 125, 255, 0.2); /* Border for the collapsed button */
 }
 
+/* Styling for the expanded state of the button within the card header */
 .faq .accordion .card .card-header h5 button[aria-expanded="true"]:after {
-    content: '\f068';
-    color: #fff;
-    background-image: -webkit-linear-gradient(-180deg, #5e7eff 0%, #ff5f74 30%, #a85fff 100%);
+  content: '\f068'; /* Content for the icon (Font Awesome) */
+  color: #fff; /* Text color for the expanded button */
+  background-image: -webkit-linear-gradient(-180deg, #5e7eff 0%, #ff5f74 30%, #a85fff 100%); /* Background gradient for the expanded button */
 }
 
+/* Styling for the card body within each accordion card */
 .faq .accordion .card .card-body {
-    -webkit-box-shadow: 0px 15px 140px 0px rgba(69, 81, 100, 0.1);
-    box-shadow: 0px 15px 140px 0px rgba(69, 81, 100, 0.1);
-    border-radius: 0 0 10px 10px;
-    padding-top: 0;
-    margin-top: -6px;
-    padding-left: 72px;
-    padding-right: 70px;
-    padding-bottom: 23px;
-    color: rgba(30, 48, 86, 0.8);
-    line-height: 30px;
+  box-shadow: 0px 15px 140px 0px rgba(69, 81, 100, 0.1); /* Box shadow for the card body */
+  border-radius: 0 0 10px 10px; /* Border radius for the card body */
+  padding-top: 0; /* Removing top padding for the card body */
+  margin-top: -6px; /* Adjusting top margin for alignment */
+  padding-left: 72px; /* Left padding for the card body */
+  padding-right: 70px; /* Right padding for the card body */
+  padding-bottom: 23px; /* Bottom padding for the card body */
+  color: rgba(30, 48, 86, 0.8); /* Text color for the card body */
+  line-height: 30px; /* Line height for the card body */
 }
 
 
+/* Styling for the form container */
 .form-container {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 350px; 
-    margin: 20px auto; 
+  background-color: #fff; /* Background color */
+  padding: 10px; /* Padding */
+  border-radius: 5px; /* Border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+  width: 350px; /* Width */
+  margin: 20px auto; /* Margin for centering */
 }
 
+/* Styling for form labels */
 form label {
-    display: block;
-    margin-bottom: 5px;
-    margin-top: 10px; 
-    font-weight: bold;
+  display: block; /* Display block */
+  margin-bottom: 5px; /* Bottom margin */
+  margin-top: 10px; /* Top margin */
+  font-weight: bold; /* Bold font weight */
 }
 
+/* Styling for number input fields */
 form input[type="number"] {
-    width: 94%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+  width: 94%; /* Width */
+  padding: 8px; /* Padding */
+  margin-bottom: 10px; /* Bottom margin */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 3px; /* Border radius */
 }
 
+/* Styling for range input fields */
 form input[type="range"] {
-    width: 98%;
-    margin-bottom: 10px;
+  width: 98%; /* Width */
+  margin-bottom: 10px; /* Bottom margin */
 }
 
+/* Styling for the slider value */
 #slider-value {
-    display: inline-block;
-    font-weight: bold;
-    margin-left: 5px;
+  display: inline-block; /* Display inline-block */
+  font-weight: bold; /* Bold font weight */
+  margin-left: 5px; /* Left margin */
 }
 
+/* Styling for submit button */
 input[type="submit"] {
-    background-color: #ff008b;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-    transition: background-color 0.3s; /* Add a smooth transition effect for the background color */
+  background-color: #ff008b; /* Background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Padding */
+  border: none; /* No border */
+  border-radius: 30px; /* Border radius */
+  cursor: pointer; /* Cursor pointer */
+  display: block; /* Display block */
+  margin: 0 auto; /* Margin for centering */
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
+/* Styling for submit button on hover */
 input[type="submit"]:hover {
-    background-color: #ff0055; /* Change the background color on hover */
+  background-color: #ff0055; /* Background color on hover */
 }
 
+/* Styling for loader */
+.loader {
+  position: fixed; /* Fixed position */
+  top: 50%; /* Top position */
+  left: 50%; /* Left position */
+  transform: translate(-50%, -50%); /* Centering */
+  z-index: 9999; /* Higher z-index */
+  display: none; /* Initially hidden */
+}
 
+/* Styling for blurred effect */
+.blur {
+  filter: blur(20px); /* Blur effect */
+  pointer-events: none; /* No pointer events */
+}
 
-
-  /* Center loader */
-  .loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    display: none;
-  }
-
-  /* Blur the page */
-  .blur {
-    filter: blur(20px); /* Adjust the blur amount as needed */
-    pointer-events: none;
-  }
-
-
-
-
-
-/* Style the dropdown container */
+/* Styling for select container */
 .select-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 15px;
-  }
-  
-  /* Style the label */
-  label {
-    font-weight: bold;
-  }
-  
-  /* Style the select element */
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    font-size: 16px;
-    color: #333;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  
-  /* Style the select when it's focused */
-  select:focus {
-    border-color: #007bff; /* Change this color to your preferred focus color */
-  }
-  
-  /* Style the dropdown arrow */
-  .select-container::after {
-    content: '\25BC'; /* Downward arrow character */
-    font-size: 12px;
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-  
-  /* Remove the default dropdown arrow in modern browsers */
-  select::-ms-expand {
-    display: none;
-  }
-  
-  /* Style the options within the dropdown */
-  option {
-    background-color: #fff;
-    color: #333;
-  }
-  
-  /* Style the hover and selected option */
-  select:hover option:hover,
-  select option:checked {
-    background-color: #007bff; /* Change this color to your preferred hover/selected color */
-    color: #fff; /* Change this color to your preferred text color */
-  }
-  
-  /* Style the select when it's disabled */
-  select:disabled {
-    background-color: #eee;
-    cursor: not-allowed;
-  }
-  
-  /* Style the select when it's required */
-  select:required {
-    border-color: #dc3545; /* Change this color to your preferred required color */
-  }
-  
-
-  .homepage-link {
-    color: #ff008b; /* Change the color to your preference */
-    text-decoration: none; /* Remove the underline from the link */
-    font-weight: bold; /* Make the text bold */
-    padding: 10px 20px; /* Add padding to create a box around the text */
-    border: 1px solid #ff008b;; /* Add a border with the link color */
-    display: inline-block; /* Make the link behave like a block element */
+  position: relative; /* Relative position */
+  display: inline-block; /* Display inline-block */
+  margin-bottom: 15px; /* Bottom margin */
 }
 
-.homepage-link:hover {
-    text-decoration: underline;
-    color: #ff008b; /* Add underline on hover */
+/* Styling for select label */
+label {
+  font-weight: bold; /* Bold font weight */
+}
 
+/* Styling for select element */
+select {
+  width: 100%; /* Width */
+  padding: 10px; /* Padding */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 4px; /* Border radius */
+  background-color: #fff; /* Background color */
+  font-size: 16px; /* Font size */
+  color: #333; /* Text color */
+  outline: none; /* No outline */
+  transition: border-color 0.2s; /* Smooth transition for border color */
+}
+
+/* Styling for focused select */
+select:focus {
+  border-color: #007bff; /* Border color on focus */
+}
+
+/* Styling for dropdown arrow */
+.select-container::after {
+  content: '\25BC'; /* Downward arrow character */
+  font-size: 12px; /* Font size */
+  position: absolute; /* Absolute position */
+  top: 50%; /* Top position */
+  right: 10px; /* Right position */
+  transform: translateY(-50%); /* Centering vertically */
+  pointer-events: none; /* No pointer events */
+}
+
+/* Removing default dropdown arrow in IE */
+select::-ms-expand {
+  display: none;
+}
+
+/* Styling for options within dropdown */
+option {
+  background-color: #fff; /* Background color */
+  color: #333; /* Text color */
+}
+
+/* Styling for hover and selected option */
+select:hover option:hover,
+select option:checked {
+  background-color: #007bff; /* Background color on hover/selected */
+  color: #fff; /* Text color on hover/selected */
+}
+
+/* Styling for disabled select */
+select:disabled {
+  background-color: #eee; /* Background color */
+  cursor: not-allowed; /* Disabled cursor */
+}
+
+/* Styling for required select */
+select:required {
+  border-color: #dc3545; /* Border color for required */
+}
+
+/* Styling for homepage link */
+.homepage-link {
+  color: #ff008b; /* Text color */
+  text-decoration: none; /* No underline */
+  font-weight: bold; /* Bold font weight */
+  padding: 10px 20px; /* Padding */
+  border: 1px solid #ff008b; /* Border */
+  display: inline-block; /* Display inline-block */
+}
+
+/* Styling for homepage link on hover */
+.homepage-link:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: #ff008b; /* Text color on hover */
+}
+
+/* Styling for option buttons */
+.option-button {
+  background-color: transparent; /* Transparent background */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+/* Styling for active option button */
+.option-button.active {
+  background-color: #FF69B4; /* Background color for active button */
+  color: #fff; /* Text color for active button */
 }

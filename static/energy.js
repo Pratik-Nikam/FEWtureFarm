@@ -1,4 +1,83 @@
-// Generate Current Date and TIme
+function parseEnergyProductionData(csvData) {
+    // Split CSV data into lines
+    const lines = csvData.trim().split('\n');
+    // Remove the first 18 lines (assuming they're headers or metadata)
+    const cropsDataLines = lines.slice(18);
+    // Initialize an object to store parsed data
+    const data = {
+        wind: [],
+        solar: [],
+        zeroMWh: []
+    };
+
+    // Extract column names from the first line of data
+    const columnNames = cropsDataLines[0].split(',');
+    // Find the indices of relevant columns
+    const windYIndex = columnNames.indexOf('"y"');
+    const solarYIndex = columnNames.indexOf('"y"', windYIndex + 1);
+    const zeroMWhYIndex = columnNames.indexOf('"y"', solarYIndex + 1);
+
+    // Parse each line of data and populate the object
+    for (let i = 1; i < cropsDataLines.length; i++) {
+        const line = cropsDataLines[i];
+        const values = line.split(',');
+        const windY = parseFloat(values[windYIndex].replace(/"/g, ''));
+        const solarY = parseFloat(values[solarYIndex].replace(/"/g, ''));
+        const zeroMWhY = parseFloat(values[zeroMWhYIndex].replace(/"/g, ''));
+
+        data.wind.push(windY);
+        data.solar.push(solarY);
+        data.zeroMWh.push(zeroMWhY);
+    }
+    return data;
+}
+
+function parseEnergyIncomeData(csvData) {
+    const lines = csvData.trim().split('\n');
+    const cropsDataLines = lines.slice(18); // Remove the first 18 lines
+
+    // Initialize an object to store parsed data
+    const data = {
+        wind: [],
+        solar: [],
+    };
+
+    // Extract column names from the first line of data
+    const columnNames = cropsDataLines[0].split(',');
+    // Find the indices of relevant columns
+    const windYIndex = columnNames.indexOf('"y"');
+    const solarYIndex = columnNames.indexOf('"y"', windYIndex + 1);
+
+    // Parse each line of data and populate the object
+    for (let i = 1; i < cropsDataLines.length; i++) {
+        const line = cropsDataLines[i];
+        const values = line.split(',');
+        const windY = parseFloat(values[windYIndex].replace(/"/g, ''));
+        const solarY = parseFloat(values[solarYIndex].replace(/"/g, ''));
+
+        data.wind.push(windY);
+        data.solar.push(solarY);
+    }
+    return data;
+}
+
+function fetchAndParseCSV(url, parser, callback) {
+    // Fetch CSV data from the provided URL
+    fetch(url)
+        .then(response => response.text())
+        .then(csvText => {
+            // Parse CSV data using the provided parser function
+            const parsedData = parser(csvText);
+            // Execute the callback function with the parsed data
+            callback(parsedData);
+        })
+        .catch(error => {
+            // Handle errors related to fetching or parsing CSV data
+            console.error('Error fetching or parsing CSV:', error);
+        });
+}
+
+// Generate formatted current date and time
 function getCurrentDateTime() {
     const months = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -17,94 +96,104 @@ function getCurrentDateTime() {
     return formattedDateTime;
 }
 
-function drawCharts() {
-    fetch('/calculateEnergy')
-        .then(response => response.json())
-        .then(data => {
-            const farmEnergyProductionData = JSON.parse(data.farm_energy_production_img_data);
-            const energyNetCalculationData = JSON.parse(data.energy_net_calc_img_data);
-
-            const farmEnergyProductionTitle = farmEnergyProductionData.energy.farmenergyproductiontitle;
-            const energyProductionTitle = energyNetCalculationData.Income.energyproductiontitle;
-
-            const years = farmEnergyProductionData.energy.Year.map(Number);
-            const windData = farmEnergyProductionData.energy.Wind.map(Number);
-            const solarData = farmEnergyProductionData.energy.Solar.map(Number);
-            const zeroMwhData = farmEnergyProductionData.energy.zeroMWh.map(Number);
-
-            const netYears = energyNetCalculationData.Income.Year.map(Number);
-            const windIncome = energyNetCalculationData.Income.Wind.map(Number); 
-            const solarIncome = energyNetCalculationData.Income.Solar.map(Number);
-            const us$0Income = energyNetCalculationData.Income.US$0.map(Number);
-
-            // Create the first Highcharts chart for farmEnergyProduction
-            Highcharts.chart('chart1', {
-                title: {
-                    text: farmEnergyProductionTitle,
-                },
-                xAxis: {
-                    categories: years,
-                    title: {
-                        text: '<b>Year since the beginning of the simulation</b>',
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: '<b>Production (MWh)</b>',
-                    },
-                },
-                series: [
-                    { name: 'Wind', data: windData, color: 'red' },
-                    { name: 'Solar', data: solarData, color: 'green' },
-                    { name: '0 MWh', data: zeroMwhData, color: 'blue' },
-                ],
-                // Add exporting options
-                exporting: {
-                    filename: `EnergyProduction_${getCurrentDateTime()}`,
-                    buttons: {
-                        contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
-                        },
-                    },
-                },
-            });
-
-            // Create the second Highcharts chart for energyNetIncomeCalculation
-            Highcharts.chart('chart2', {
-                title: {
-                    text: energyProductionTitle,
-                },
-                xAxis: {
-                    categories: netYears,
-                    title: {
-                        text: '<b>Year since the beginning of the simulation</b>',
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: '<b>Income ($)</b>',
-                    },
-                },
-                series: [
-                    { name: 'Wind', data: windIncome, color: 'red' },
-                    { name: 'Solar', data: solarIncome, color: 'green' },
-                    // { name: 'US$', data: us$0Income, color: 'yellow' },
-                ],
-                // Add exporting options
-                exporting: {
-                    filename: `EnergyNetIncome_${getCurrentDateTime()}`,
-                    buttons: {
-                        contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
-                        },
-                    },
-                },
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+// Display a popup indicating the need to calculate the model first
+function showModelPopup() {
+    alert("Please calculate the model first.");
+    // You can replace alert with a custom modal popup if needed
 }
 
-// Call the drawCharts function when the page loads
-document.addEventListener('DOMContentLoaded', drawCharts);
+// Function to draw energy charts
+function drawEnergyChart() {
+    // Retrieve the key from sessionStorage
+    const key = sessionStorage.getItem("combination");
+
+    // Construct the URLs dynamically using the key
+    const energyProductionUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/farm-energy-production.csv`;
+    const energyIncomeUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/energy-net-income.csv`;
+
+    // Fetch and parse CSV data for energy production and income
+    fetchAndParseCSV(energyProductionUrl, parseEnergyProductionData, (EnergyProductionData) => {
+        fetchAndParseCSV(energyIncomeUrl, parseEnergyIncomeData, (EnergyIncomeData) => {
+            // Once data is parsed, draw energy charts
+            drawEnergyCharts(EnergyProductionData, EnergyIncomeData);
+        });
+    });
+}
+
+// Function to draw energy charts based on parsed data
+function drawEnergyCharts(EnergyProductionData, EnergyIncomeData) {
+    // Assuming data is yearly and starts from year 1
+    const years = Array.from(Array(EnergyProductionData.wind.length).keys());
+    const windData = EnergyProductionData.wind;
+    const solarData = EnergyProductionData.solar;
+    const zeroMwhData = EnergyProductionData.zeroMWh;
+
+    // Assuming data is yearly and starts from year 1
+    const netYears = Array.from(Array(EnergyIncomeData.wind.length).keys());
+    const windIncome = EnergyIncomeData.wind;
+    const solarIncome = EnergyIncomeData.solar;
+
+    // Create the first Highcharts chart for farmEnergyProduction
+    Highcharts.chart('chart1', {
+        title: {
+            text: 'Farm Energy Production',
+        },
+        xAxis: {
+            categories: years,
+            title: {
+                text: '<b>Year since the beginning of the simulation</b>',
+            },
+        },
+        yAxis: {
+            title: {
+                text: '<b>Production (MWh)</b>',
+            },
+        },
+        series: [
+            { name: 'Wind', data: windData, color: 'red' },
+            { name: 'Solar', data: solarData, color: 'green' },
+            { name: '0 MWh', data: zeroMwhData, color: 'blue' },
+        ],
+        // Add exporting options
+        exporting: {
+            filename: `EnergyProduction_${getCurrentDateTime()}`,
+            buttons: {
+                contextButton: {
+                    menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
+                },
+            },
+        },
+    });
+
+    // Create the second Highcharts chart for energyNetIncomeCalculation
+    Highcharts.chart('chart2', {
+        title: {
+            text: 'Energy Net Income Calculation',
+        },
+        xAxis: {
+            categories: netYears,
+            title: {
+                text: '<b>Year since the beginning of the simulation</b>',
+            },
+        },
+        yAxis: {
+            title: {
+                text: '<b>Income ($)</b>',
+            },
+        },
+        series: [
+            { name: 'Wind', data: windIncome, color: 'red' },
+            { name: 'Solar', data: solarIncome, color: 'green' },
+        ],
+        // Add exporting options
+        exporting: {
+            filename: `EnergyNetIncome_${getCurrentDateTime()}`,
+            buttons: {
+                contextButton: {
+                    menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
+                },
+            },
+        },
+    });
+}
+

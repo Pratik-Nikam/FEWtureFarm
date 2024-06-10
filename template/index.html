@@ -2,28 +2,43 @@
 <html>
 <head>
     <title>Agriculture</title>
+    <!-- Link to the CSS file for styling the agriculture page -->
     <link rel="stylesheet" type="text/css" href="../static/agriculture.css">
 </head>
 <body>
+    <!-- Container for the first chart -->
     <div class="chart-container">
+        <!-- Link to navigate back to the ChartWindow page -->
         <a href="../template/ChartWindow.html" class="back-link"></a>
+        <!-- Div to hold the first chart -->
         <div class="chart" id="chart1">
+            <!-- Canvas element where the crop production chart will be rendered -->
             <canvas id="cropProductionChart"></canvas>
         </div>
     </div>
     
+    <!-- Container for the second chart -->
     <div class="chart-container1">
+        <!-- Link to navigate back to the ChartWindow page -->
         <a href="../template/ChartWindow.html" class="back-link"></a>
+        <!-- Div to hold the second chart -->
         <div class="chart" id="chart2">
+            <!-- Canvas element where the net calculation chart will be rendered -->
             <canvas id="netCalculationChart"></canvas>
         </div>
     </div>
+    
+    <!-- Script to load Chart.js library for creating charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Script to load Highcharts library for creating interactive charts -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- Script to add exporting module to Highcharts for exporting chart data -->
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- Script to add export-data module to Highcharts for exporting chart data -->
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <!-- Script to load html2canvas library for taking screenshots of charts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.2.2/html2canvas.min.js"></script>
+    <!-- Script to load custom JavaScript for the agriculture charts -->
     <script src="../static/agriculture.js"></script>
 </body>
 </html>
-

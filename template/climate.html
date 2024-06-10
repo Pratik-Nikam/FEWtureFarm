@@ -2,29 +2,37 @@
 <html>
 <head>
     <title>Climate Change</title>
+    <!-- Link to the CSS file for styling the climate change charts -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='water.css') }}">
 </head>
 <body>
+    <!-- Container for the first chart -->
     <div class="chart-container">
+        <!-- Link to navigate back to the Chart Window page -->
         <a href="/ChartWindow" class="back-link"></a>
+        <!-- Chart 1: Total Farm Energy Income Chart -->
         <div class="chart" id="chart1">
             <canvas id="totalFarmEnergyIncomeChart"></canvas>
         </div>
     </div>
     
+    <!-- Container for the second chart -->
     <div class="chart-container1">
+        <!-- Link to navigate back to the Chart Window page -->
         <a href="/ChartWindow" class="back-link"></a>
+        <!-- Chart 2: Income From Crop Insurance Chart -->
         <div class="chart" id="chart2">
             <canvas id="incomeFromCropInsuranceChart"></canvas>
         </div>
     </div>
+    
+    <!-- Including necessary JavaScript libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.2.2/html2canvas.min.js"></script>
+    <!-- Link to the JavaScript file that handles climate charts functionalities -->
     <script src="{{ url_for('static', filename='climate.js') }}"></script>
- 
 </body>
 </html>
-

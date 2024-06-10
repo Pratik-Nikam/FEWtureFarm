@@ -12,11 +12,16 @@ $(document).ready(function () {
         extractFormData();
     });
 
+    // Function to extract form data
     function extractFormData() {
         var formData = $("#MainForm").serializeArray();
         var formattedData = {};
+
+        // Convert form data to key-value pairs
         formData.forEach(function (field) {
             formattedData[field.name] = field.value;
+
+            // Check for specific conditions and modify data if necessary
             if (
                 field.name === "climate_model" &&
                 field.value === "RCP4.5" &&
@@ -26,17 +31,18 @@ $(document).ready(function () {
             }
         });
 
-        // console.log(formattedData);
+        // Perform additional processing or send data to the server here
+
+        // Example: Sending the data to the server via AJAX
+
+        // Find combination based on form data
         var combination = findCombination(formattedData);
         sessionStorage.setItem("combination", combination);
         console.log(sessionStorage.getItem("combination"));
         console.log("Combination: " + combination);
-        // Perform additional processing or send data to the server here
-
-        // Example: Sending the data to the server via AJAX
     }
 
-    // Download CSV function
+    // Function to convert form data to CSV format
     $("#download-button").click(function (e) {
         e.preventDefault();
         var formData = $("#MainForm").serializeArray();
@@ -44,17 +50,22 @@ $(document).ready(function () {
         downloadCSV(csvData, "form_data.csv");
     });
 
+    // Function to convert form data to CSV format
     function convertToCSV(formData) {
         var csvRows = [];
+
         // Add header row
         csvRows.push("Field,Value");
+
         // Add data rows
         formData.forEach(function (field) {
             csvRows.push(`${field.name},${field.value}`);
         });
+
         return csvRows.join("\n");
     }
 
+    // Function to download CSV file
     function downloadCSV(csvData, filename) {
         var blob = new Blob([csvData], { type: "text/csv" });
         var url = window.URL.createObjectURL(blob);
@@ -123,10 +134,50 @@ $(document).ready(function () {
                 itc_s: 30,
                 ptc_s: 0.03,
             },
+            E3: {
+                energy_value: 45,
+                loan_term: 20,
+                interest: 3,
+                num_wind_turbines: 4,
+                nyear_w: 30,
+                capacity_w: 2,
+                cost_w: 1470,
+                degrade_w: 1,
+                wind_factor: 42,
+                num_panel_sets: 10,
+                nyear_s: 25,
+                cost_s: 1750,
+                capacity_s: 250,
+                degrade_s: 1,
+                sun_hrs: 6,
+                ptc_w: 0.03,
+                itc_s: 30,
+                ptc_s: 0.03,
+            },
+            E4: {
+                energy_value: 45,
+                loan_term: 20,
+                interest: 3,
+                num_wind_turbines: 4,
+                nyear_w: 30,
+                capacity_w: 2,
+                cost_w: 1470,
+                degrade_w: 1,
+                wind_factor: 42,
+                num_panel_sets: 10,
+                nyear_s: 25,
+                cost_s: 1750,
+                capacity_s: 250,
+                degrade_s: 1,
+                sun_hrs: 8,
+                ptc_w: 0.03,
+                itc_s: 30,
+                ptc_s: 0.03,
+            },
         },
         water: {
-            W1: { aquifier_level: 200, min_aquifier_level: 30 },
-            W2: { aquifier_level: 300, min_aquifier_level: 30 },
+            
+            W1: { aquifier_level: 300, min_aquifier_level: 30 },
         },
         climate: {
             C1: { future_processes: "Repeat Historical", climate_model: null },
@@ -137,10 +188,14 @@ $(document).ready(function () {
         },
     };
 
-    function findCombination(formData) {
-        let agriKey, energyKey, waterKey, climateKey;
 
+    function findCombination(formData) {
+        // Initialize variables to hold keys for different categories
+        let agriKey, energyKey, waterKey, climateKey;
+    
+        // Loop through agriculture data to find a matching key
         for (const [key, value] of Object.entries(data.agriculture)) {
+            // Check if the current agriculture data matches the form data
             if (
                 JSON.stringify(value) ===
                 JSON.stringify({
@@ -150,11 +205,14 @@ $(document).ready(function () {
                     sg_area: parseInt(formData.sg_area),
                 })
             ) {
-                agriKey = key;
-                break;
+                agriKey = key; // If matched, assign the key
+                break; // Break the loop since the key is found
             }
         }
+    
+        // Loop through energy data to find a matching key
         for (const [key, value] of Object.entries(data.energy)) {
+            // Check if the current energy data matches the form data
             if (
                 JSON.stringify(value) ===
                 JSON.stringify({
@@ -178,12 +236,14 @@ $(document).ready(function () {
                     ptc_s: parseFloat(formData.ptc_s),
                 })
             ) {
-                energyKey = key;
-                break;
+                energyKey = key; // If matched, assign the key
+                break; // Break the loop since the key is found
             }
         }
-
+    
+        // Loop through water data to find a matching key
         for (const [key, value] of Object.entries(data.water)) {
+            // Check if the current water data matches the form data
             if (
                 JSON.stringify(value) ===
                 JSON.stringify({
@@ -191,19 +251,14 @@ $(document).ready(function () {
                     min_aquifier_level: parseInt(formData.min_aquifier_level),
                 })
             ) {
-                waterKey = key;
-                break;
+                waterKey = key; // If matched, assign the key
+                break; // Break the loop since the key is found
             }
         }
-
+    
+        // Loop through climate data to find a matching key
         for (const [key, value] of Object.entries(data.climate)) {
-            // console.log(
-            //     JSON.stringify(value),
-            //     JSON.stringify({
-            //         future_processes: formData.future_processes,
-            //         climate_model: formData.climate_model || null,
-            //     })
-            // );
+            // Check if the current climate data matches the form data
             if (
                 JSON.stringify(value) ===
                 JSON.stringify({
@@ -211,15 +266,19 @@ $(document).ready(function () {
                     climate_model: formData.climate_model || null,
                 })
             ) {
-                climateKey = key;
-                break;
+                climateKey = key; // If matched, assign the key
+                break; // Break the loop since the key is found
             }
         }
-        // console.log(agriKey, energyKey, waterKey, climateKey);
+    
+        // Check if keys for all categories are found
         if (agriKey && energyKey && waterKey && climateKey) {
+            // If keys for all categories are found, return the combination
             return `${climateKey}${agriKey}${energyKey}${waterKey}`;
         } else {
+            // If any key is missing, return a message indicating no matching combination found
             return "No matching combination found.";
         }
     }
+    
 });
