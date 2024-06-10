@@ -28,7 +28,7 @@ function parseNetNetIncomeData(csvData) {
         data.energy.push(energyY);
         data.all.push(allY);
     }
-    console.log(data);
+    // console.log(data);
     
     return data;
 }
@@ -109,8 +109,8 @@ function drawFarmChart() {
 
 // Function to draw farm charts
 function drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData) {
-    console.log(netNetIncomeData);
-    console.log(cropInsuranceIncomeData);
+    // console.log(netNetIncomeData);
+    // console.log(cropInsuranceIncomeData);
 
     // Extract years assuming data is yearly and starts from year 1
     const years = Array.from(Array(netNetIncomeData.crop.length).keys());
@@ -118,7 +118,7 @@ function drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData) {
     const energyData = netNetIncomeData.energy;
     const allData = netNetIncomeData.all;
 
-    console.log(cropInsuranceIncomeData);
+    // console.log(cropInsuranceIncomeData);
     const insuranceYears = Array.from(Array(cropInsuranceIncomeData.Corn.length).keys());
     const cornData = cropInsuranceIncomeData.Corn;
     const wheatData = cropInsuranceIncomeData.Wheat;

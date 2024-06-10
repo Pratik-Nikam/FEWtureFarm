@@ -114,7 +114,7 @@ function drawWaterChart() {
 
     // Fetch and parse crop ground water data
     fetchAndParseCSV(cgwURL, parseCropGroundWaterData, (parseCGWData) => {
-        console.log(parseCGWData);
+        // console.log(parseCGWData);
         const years = Array.from(Array(parseCGWData.Corn.length).keys());
 
         // Create Highcharts chart for Crop Groundwater Irrigation
@@ -152,7 +152,7 @@ function drawWaterChart() {
 
     // Fetch and parse crop water level data
     fetchAndParseCSV(cgwlURL, parseCropWaterLevelData, (parseGWLData) => {
-        console.log(parseGWLData);
+        // console.log(parseGWLData);
         const years = Array.from(Array(parseGWLData.GWlevel.length).keys());
 
         // Create Highcharts chart for Groundwater Level
