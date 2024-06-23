@@ -121,7 +121,7 @@ function drawAgricultureChart() {
         const years = Array.from(Array(parsedCropData.Corn.length).keys());
         Highcharts.chart('chart1', {
             title: {
-                text: "Crop Production (Bushels) - Start Year: 2008",
+                text: "Crop Production (Bushels) - Year: 2008 to 2098",
             },
             xAxis: {
                 categories: years,
@@ -161,7 +161,7 @@ function drawAgricultureChart() {
 
         Highcharts.chart('chart2', {
             title: {
-                text: "Agriculture Net Income",
+                text: "Agriculture Net Income - Year: 2008 to 2098",
             },
             xAxis: {
                 categories: netYears,

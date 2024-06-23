@@ -299,3 +299,17 @@ select:required {
   background-color: #FF69B4; /* Background color for active button */
   color: #fff; /* Text color for active button */
 }
+
+
+.readonly-input {
+  width: 100%;
+  height: 38px; /* Match the height of the select element */
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  box-sizing: border-box;
+  color: #000;
+  background-color: #e0e0e0;
+}

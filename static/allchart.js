@@ -1,17 +1,17 @@
 // Get Current Timestamp 
 function getCurrentDateTime() {
     const months = [
-        "Jan","Feb","Mar","Apr","May","Jun",
-        "Jul","Aug","Sep","Oct","Nov","Dec"
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
 
     const now = new Date();
-    const day = now.getDate().toString().padStart(2,'0');
+    const day = now.getDate().toString().padStart(2, '0');
     const month = months[now.getMonth()];
     const year = now.getFullYear();
-    const hours = now.getHours().toString().padStart(2,'0');
-    const minutes = now.getMinutes().toString().padStart(2,'0');
-    const seconds = now.getSeconds().toString().padStart(2,'0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
 
     const formattedDateTime = `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
 
@@ -19,68 +19,167 @@ function getCurrentDateTime() {
 }
 
 
-
-// Agriculture Chart JS
 function drawAgricultureCharts() {
-    fetch('/calculateAgriculture')
-    .then(response => response.json())
-    .then(data => {
-        const cropProductionData = JSON.parse(data.crop_production_img);
-        const netCalculationData = JSON.parse(data.net_calc_img);
+    // Function to parse crop production data from CSV
+    function parseData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(19); // Remove the first 20 lines
+        const data = {
+            Corn: [],
+            Wheat: [],
+            Soybeans: [],
+            SG: []
+        };
 
-        const cropProductionTitle = cropProductionData.production.crop_production_title;
-        const netCalculationTitle = netCalculationData.Income.netCalculationTitle;
+        // Extract column names
+        const columnNames = cropsDataLines[0].split(',');
+        // Find indices of columns for each crop
+        const cornYIndex = columnNames.indexOf('"y"');
+        const wheatYIndex = columnNames.indexOf('"y"', cornYIndex + 1);
+        const soybeansYIndex = columnNames.indexOf('"y"', wheatYIndex + 1);
+        const sgYIndex = columnNames.indexOf('"y"', soybeansYIndex + 1);
 
-        const years = cropProductionData.production.Year.map(Number);
-        const cornData = cropProductionData.production.Corn.map(Number);
-        const wheatData = cropProductionData.production.Wheat.map(Number);
-        const soybeanData = cropProductionData.production.Soybean.map(Number);
-        const sgData = cropProductionData.production.SG.map(Number);
+        // Parse data for each line
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const cornY = parseFloat(values[cornYIndex].replace(/"/g, ''));
+            const wheatY = parseFloat(values[wheatYIndex].replace(/"/g, ''));
+            const soybeansY = parseFloat(values[soybeansYIndex].replace(/"/g, ''));
+            const sgY = parseFloat(values[sgYIndex].replace(/"/g, ''));
 
-        const netYears = netCalculationData.Income.Year.map(Number);
-        const cornIncome = netCalculationData.Income.Corn.map(Number);
-        const wheatIncome = netCalculationData.Income.Wheat.map(Number);
-        const soybeanIncome = netCalculationData.Income.Soybean.map(Number);
-        const sgIncome = netCalculationData.Income.SG.map(Number);
-        const USIncome = netCalculationData.Income.US$0.map(Number);
+            // Push data for each crop
+            data.Corn.push(cornY);
+            data.Wheat.push(wheatY);
+            data.Soybeans.push(soybeansY);
+            data.SG.push(sgY);
+        }
 
-        // Create the first Highcharts for cropProductionChart
+        return data;
+    }
 
+    // Function to parse net income data from CSV
+    function parseNetIncomeData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(20); // Remove the first 20 lines
+        const data = {
+            Corn: [],
+            Wheat: [],
+            Soybeans: [],
+            SG: []
+        };
+
+        // Extract column names
+        const columnNames = cropsDataLines[0].split(',');
+        // Find indices of columns for each crop
+        const cornYIndex = columnNames.indexOf('"y"');
+        const wheatYIndex = columnNames.indexOf('"y"', cornYIndex + 1);
+        const soybeansYIndex = columnNames.indexOf('"y"', wheatYIndex + 1);
+        const sgYIndex = columnNames.indexOf('"y"', soybeansYIndex + 1);
+
+        // Parse data for each line
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const cornY = parseFloat(values[cornYIndex].replace(/"/g, ''));
+            const wheatY = parseFloat(values[wheatYIndex].replace(/"/g, ''));
+            const soybeansY = parseFloat(values[soybeansYIndex].replace(/"/g, ''));
+            const sgY = parseFloat(values[sgYIndex].replace(/"/g, ''));
+
+            // Push data for each crop
+            data.Corn.push(cornY);
+            data.Wheat.push(wheatY);
+            data.Soybeans.push(soybeansY);
+            data.SG.push(sgY);
+        }
+
+        return data;
+    }
+
+    // Function to fetch and parse CSV data
+    function fetchAndParseCSV(url, parser, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(csvText => {
+                const parsedData = parser(csvText);
+                callback(parsedData);
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing CSV:', error);
+            });
+    }
+
+    // Function to get current date and time
+    function getCurrentDateTime() {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        const now = new Date();
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const formattedDateTime = `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
+        return formattedDateTime;
+    }
+
+    // Main logic to draw charts
+    const key = sessionStorage.getItem("combination");
+    // Assuming key is obtained from sessionStorage.getItem("combination")
+
+    // URLs with placeholders for the key
+    const cropProductionUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/crop-production.csv`;
+    const netIncomeUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/ag-net-income.csv`;
+
+    // Fetch and parse crop production data
+    fetchAndParseCSV(cropProductionUrl, parseData, (parsedCropData) => {
+        const years = Array.from(Array(parsedCropData.Corn.length).keys());
         Highcharts.chart('chart1', {
-            title:{
-                text: cropProductionTitle,
+            title: {
+                text: "Crop Production (Bushels) - Year: 2008 to 2098",
             },
             xAxis: {
                 categories: years,
-                title:{
+                title: {
                     text: '<b>Year since the beginning of the simulation</b>'
                 },
             },
             yAxis: {
-                title:{
-                    text:'<b>Production (Bushels/Acre)</b>',
+                title: {
+                    text: '<b>Production (Bushels/Acre)</b>',
                 },
             },
             series: [
-                { name: 'Corn', data: cornData, color: 'red'},
-                { name: 'Wheat', data: wheatData, color: 'green'},
-                { name: 'Soybeans', data: soybeanData, color: 'blue'},
-                { name: 'SG', data: sgData, color: 'orange'}
+                { name: 'Corn', data: parsedCropData.Corn, color: 'red' },
+                { name: 'Wheat', data: parsedCropData.Wheat, color: 'green' },
+                { name: 'Soybeans', data: parsedCropData.Soybeans, color: 'blue' },
+                { name: 'SG', data: parsedCropData.SG, color: 'orange' }
             ],
-
             exporting: {
-                buttons:{
-                    filename: `CropProduction_${getCurrentDateTime()}`,
-                    contextButton:{
-                        menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                filename: `CropProduction_${getCurrentDateTime()}`,
+                buttons: {
+                    contextButton: {
+                        menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                     },
                 },
             },
         });
-        // Create the second Highcharts chart for energyNetIncomeCalculation
+    });
+
+    // Fetch and parse net income data
+    fetchAndParseCSV(netIncomeUrl, parseNetIncomeData, (netIncomeData) => {
+        const netYears = Array.from(Array(netIncomeData.Corn.length).keys());
+        const cornIncome = netIncomeData.Corn;
+        const wheatIncome = netIncomeData.Wheat;
+        const soybeanIncome = netIncomeData.Soybeans;
+        const sgIncome = netIncomeData.SG;
+
         Highcharts.chart('chart2', {
             title: {
-                text: netCalculationTitle,
+                text: "Agriculture Net Income",
             },
             xAxis: {
                 categories: netYears,
@@ -94,152 +193,314 @@ function drawAgricultureCharts() {
                 },
             },
             series: [
-                { name: 'Corn', data: cornIncome, color: 'red'},
-                { name: 'Wheat', data: wheatIncome, color: 'green'},
-                { name: 'Soybeans', data: soybeanIncome, color: 'blue'},
-                { name: 'SG', data: sgIncome, color: 'orange'},
-                // { name: 'US$', data: USIncome, color: 'yellow' }
+                { name: 'Corn', data: cornIncome, color: 'red' },
+                { name: 'Wheat', data: wheatIncome, color: 'green' },
+                { name: 'Soybeans', data: soybeanIncome, color: 'blue' },
+                { name: 'SG', data: sgIncome, color: 'orange' },
             ],
-            // Add exporting options
             exporting: {
                 filename: `AgricultureNetIncome_${getCurrentDateTime()}`,
                 buttons: {
                     contextButton: {
-                        menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                        menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                     },
                 },
             },
         });
-
-
-    })
-    .catch(error =>{
-        console.error('Error:',error)
     });
 }
+
+// Draw agriculture chart when the DOM content is loaded
+// document.addEventListener('DOMContentLoaded', drawAgricultureChart);
 
 
 // Water Chart JS
 
 function drawWaterCharts() {
-    fetch('/calculateIrrigation')
-    .then(response => response.json())
-    .then(data => {
-        const gwIrrigationData = JSON.parse(data.crop_groundwater_irrigation_data_for_img);
-        const gwLevelData = JSON.parse(data.groundwater_level_data_img);
+    // Function to parse crop ground water data from CSV
+    function parseCropGroundWaterData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(19); // Remove the first 20 lines (headers and other info)
+        const data = {
+            Corn: [],
+            Wheat: [],
+            Soybeans: [],
+            SG: []
+        };
 
-        const CropIrrigationTitle = gwIrrigationData.irrigation.CropIrrigationTitle;
-        const GroundWaterLeveltitle = gwLevelData.gw_level.GroundWaterLeveltitle;
+        // Find the indices of the 'y' columns for each crop
+        const columnNames = cropsDataLines[0].split(',');
+        const cornYIndex = columnNames.indexOf('"y"');
+        const wheatYIndex = columnNames.indexOf('"y"', cornYIndex + 1);
+        const soybeansYIndex = columnNames.indexOf('"y"', wheatYIndex + 1);
+        const sgYIndex = columnNames.indexOf('"y"', soybeansYIndex + 1);
 
-        const years = gwIrrigationData.irrigation.Year.map(Number);
-        const cornData = gwIrrigationData.irrigation.Corn.map(Number);
-        const wheatData = gwIrrigationData.irrigation.Wheat.map(Number);
-        const soybeanData = gwIrrigationData.irrigation.Soybean.map(Number);
-        const sgData = gwIrrigationData.irrigation.SG.map(Number);
+        // Parse data for each crop
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const cornY = parseFloat(values[cornYIndex].replace(/"/g, '')); // Remove quotes and convert to float
+            const wheatY = parseFloat(values[wheatYIndex].replace(/"/g, ''));
+            const soybeansY = parseFloat(values[soybeansYIndex].replace(/"/g, ''));
+            const sgY = parseFloat(values[sgYIndex].replace(/"/g, ''));
 
-        const netYears = gwLevelData.gw_level.Year.map(Number);
-        const gwLevel = gwLevelData.gw_level.GW_level.map(Number); 
-        const minAqLvl = gwLevelData.gw_level.Min_Aq.map(Number);
-        const minPlus30 = gwLevelData.gw_level.MinPlus30.map(Number);
+            data.Corn.push(cornY);
+            data.Wheat.push(wheatY);
+            data.Soybeans.push(soybeansY);
+            data.SG.push(sgY);
+        }
+        return data;
+    }
 
-        // Create the first Highcharts for cropIrrigationChart
+    // Function to parse crop water level data from CSV
+    function parseCropWaterLevelData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(18); // Remove the first 18 lines (headers and other info)
+        const data = {
+            GWlevel: [],
+            Min_Aq: [],
+            MinPlus30: []
+        };
 
+        // Find the indices of the 'y' columns for each water level data
+        const columnNames = cropsDataLines[0].split(',');
+        const GWlevelIndex = columnNames.indexOf('"y"');
+        const Min_AqIndex = columnNames.indexOf('"y"', GWlevelIndex + 1);
+        const MinPlus30Index = columnNames.indexOf('"y"', Min_AqIndex + 1);
+
+        // Parse data for each water level
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+
+            const GWlevelY = parseFloat(values[GWlevelIndex].replace(/"/g, '')); // Remove quotes and convert to float
+            const Min_AqY = parseFloat(values[Min_AqIndex].replace(/"/g, ''));
+            const MinPlus30Y = parseFloat(values[MinPlus30Index].replace(/"/g, ''));
+
+            data.GWlevel.push(GWlevelY);
+            data.Min_Aq.push(Min_AqY);
+            data.MinPlus30.push(MinPlus30Y);
+        }
+        return data;
+    }
+
+    // Function to fetch and parse CSV data
+    function fetchAndParseCSV(url, parser, callback) {
+        fetch(url)
+            .then(response => response.text()) // Get CSV as text
+            .then(csvText => {
+                const parsedData = parser(csvText); // Parse CSV using the provided parser function
+                callback(parsedData); // Call the callback with parsed data
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing CSV:', error);
+            });
+    }
+
+    // Function to get current date and time in a specific format
+    function getCurrentDateTime() {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        const now = new Date();
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+
+        const formattedDateTime = `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
+        return formattedDateTime;
+    }
+
+    // Retrieve the key from sessionStorage
+    const key = sessionStorage.getItem("combination");
+
+    // Construct the URLs dynamically using the key
+    const cgwURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/crop-groundwater-irrigation.csv`;
+    const cgwlURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/groundwater-level.csv`;
+
+    // Fetch and parse crop ground water data
+    fetchAndParseCSV(cgwURL, parseCropGroundWaterData, (parseCGWData) => {
+        const years = Array.from(Array(parseCGWData.Corn.length).keys());
+
+        // Create Highcharts chart for Crop Groundwater Irrigation
         Highcharts.chart('chart3', {
-            title:{
-                text: CropIrrigationTitle,
+            title: {
+                text: 'Crop Groundwater Irrigation - Year: 2008 to 2098',
             },
             xAxis: {
                 categories: years,
-                title:{
-                    text: '<b>Year since the beginning of the simulation</b>'
-                },
-            },
-            yAxis: {
-                title:{
-                    text:'<b>Irrigation (Inches)</b>',
-                },
-            },
-            series: [
-                { name: 'Corn', data: cornData, color: 'red'},
-                { name: 'Wheat', data: wheatData, color: 'green'},
-                { name: 'Soybean', data: soybeanData, color: 'blue'},
-                { name: 'SG', data: sgData, color: 'orange'}
-            ],
-
-            exporting: {
-                buttons:{
-                    filename: `CropIrrigation_${getCurrentDateTime()}`,
-                    contextButton:{
-                        menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
-                    },
-                },
-            },
-        });
-        // Create the second Highcharts chart for energyNetIncomeCalculation
-        Highcharts.chart('chart4', {
-            title: {
-                text: CropIrrigationTitle,
-            },
-            xAxis: {
-                categories: netYears,
                 title: {
                     text: '<b>Year since the beginning of the simulation</b>',
                 },
             },
             yAxis: {
                 title: {
-                    text: '<b>GroundWater Level (Feet)</b>',
+                    text: '<b>Irrigation (Inches)</b>',
                 },
             },
             series: [
-                { name: 'GW_level', data: gwLevel, color: 'red'},
-                { name: 'Min_Aq', data: minAqLvl, color: 'green'},
-                { name: 'MinPlus30', data: minPlus30, color: 'blue'}
+                { name: 'Corn', data: parseCGWData.Corn, color: 'red' },
+                { name: 'Wheat', data: parseCGWData.Wheat, color: 'green' },
+                { name: 'Soybeans', data: parseCGWData.Soybeans, color: 'blue' },
+                { name: 'SG', data: parseCGWData.SG, color: 'orange' }
             ],
-            // Add exporting options
             exporting: {
-                filename: `GroundWaterLevel_${getCurrentDateTime()}`,
+                filename: `CropIrrigation_${getCurrentDateTime()}`,
                 buttons: {
                     contextButton: {
-                        menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                        menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                     },
                 },
             },
         });
+    });
 
+    // Fetch and parse crop water level data
+    fetchAndParseCSV(cgwlURL, parseCropWaterLevelData, (parseGWLData) => {
+        const years = Array.from(Array(parseGWLData.GWlevel.length).keys());
 
-    })
-    .catch(error =>{
-        console.error('Error:',error)
+        // Create Highcharts chart for Groundwater Level
+        Highcharts.chart('chart4', {
+            title: {
+                text: 'Groundwater Level - Year: 2008 to 2098',
+            },
+            xAxis: {
+                categories: years,
+                title: {
+                    text: '<b>Year since the beginning of the simulation</b>',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '<b>Groundwater Level (Feet)</b>',
+                },
+            },
+            series: [
+                { name: 'GW Level', data: parseGWLData.GWlevel, color: 'red' },
+                { name: 'Min Aq', data: parseGWLData.Min_Aq, color: 'green' },
+                { name: 'Min Plus 30', data: parseGWLData.MinPlus30, color: 'blue' }
+            ],
+            exporting: {
+                filename: `GroundwaterLevel_${getCurrentDateTime()}`,
+                buttons: {
+                    contextButton: {
+                        menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
+                    },
+                },
+            },
+        });
     });
 }
+
 
 // Energy Charts JS
 
 function drawEnergyCharts() {
-    fetch('/calculateEnergy')
-        .then(response => response.json())
-        .then(data => {
-            const farmEnergyProductionData = JSON.parse(data.farm_energy_production_img_data);
-            const energyNetCalculationData = JSON.parse(data.energy_net_calc_img_data);
+    // Helper functions
+    function parseEnergyProductionData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(18);
+        const data = {
+            wind: [],
+            solar: [],
+            zeroMWh: []
+        };
+        const columnNames = cropsDataLines[0].split(',');
+        const windYIndex = columnNames.indexOf('"y"');
+        const solarYIndex = columnNames.indexOf('"y"', windYIndex + 1);
+        const zeroMWhYIndex = columnNames.indexOf('"y"', solarYIndex + 1);
 
-            const farmEnergyProductionTitle = farmEnergyProductionData.energy.farmenergyproductiontitle;
-            const energyProductionTitle = energyNetCalculationData.Income.energyproductiontitle;
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const windY = parseFloat(values[windYIndex].replace(/"/g, ''));
+            const solarY = parseFloat(values[solarYIndex].replace(/"/g, ''));
+            const zeroMWhY = parseFloat(values[zeroMWhYIndex].replace(/"/g, ''));
 
-            const years = farmEnergyProductionData.energy.Year.map(Number);
-            const windData = farmEnergyProductionData.energy.Wind.map(Number);
-            const solarData = farmEnergyProductionData.energy.Solar.map(Number);
-            const zeroMwhData = farmEnergyProductionData.energy.zeroMWh.map(Number);
+            data.wind.push(windY);
+            data.solar.push(solarY);
+            data.zeroMWh.push(zeroMWhY);
+        }
+        return data;
+    }
 
-            const netYears = energyNetCalculationData.Income.Year.map(Number);
-            const windIncome = energyNetCalculationData.Income.Wind.map(Number); 
-            const solarIncome = energyNetCalculationData.Income.Solar.map(Number);
-            const us$0Income = energyNetCalculationData.Income.US$0.map(Number);
+    function parseEnergyIncomeData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(18);
+        const data = {
+            wind: [],
+            solar: [],
+        };
+        const columnNames = cropsDataLines[0].split(',');
+        const windYIndex = columnNames.indexOf('"y"');
+        const solarYIndex = columnNames.indexOf('"y"', windYIndex + 1);
 
-            // Create the first Highcharts chart for farmEnergyProduction
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const windY = parseFloat(values[windYIndex].replace(/"/g, ''));
+            const solarY = parseFloat(values[solarYIndex].replace(/"/g, ''));
+
+            data.wind.push(windY);
+            data.solar.push(solarY);
+        }
+        return data;
+    }
+
+    function fetchAndParseCSV(url, parser, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(csvText => {
+                const parsedData = parser(csvText);
+                callback(parsedData);
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing CSV:', error);
+            });
+    }
+
+    function getCurrentDateTime() {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        const now = new Date();
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        return `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    const key = sessionStorage.getItem("combination");
+    if (!key) {
+        alert("Please calculate the model first.");
+        return;
+    }
+
+    const energyProductionUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/farm-energy-production.csv`;
+    const energyIncomeUrl = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/energy-net-income.csv`;
+
+    fetchAndParseCSV(energyProductionUrl, parseEnergyProductionData, (EnergyProductionData) => {
+        fetchAndParseCSV(energyIncomeUrl, parseEnergyIncomeData, (EnergyIncomeData) => {
+            const years = Array.from(Array(EnergyProductionData.wind.length).keys());
+            const windData = EnergyProductionData.wind;
+            const solarData = EnergyProductionData.solar;
+            const zeroMwhData = EnergyProductionData.zeroMWh;
+            const netYears = Array.from(Array(EnergyIncomeData.wind.length).keys());
+            const windIncome = EnergyIncomeData.wind;
+            const solarIncome = EnergyIncomeData.solar;
+
             Highcharts.chart('chart5', {
                 title: {
-                    text: farmEnergyProductionTitle,
+                    text: 'Farm Energy Production - Year: 2008 to 2098',
                 },
                 xAxis: {
                     categories: years,
@@ -257,21 +518,19 @@ function drawEnergyCharts() {
                     { name: 'Solar', data: solarData, color: 'green' },
                     { name: '0 MWh', data: zeroMwhData, color: 'blue' },
                 ],
-                // Add exporting options
                 exporting: {
-                    filename: `FramEnergyProduction_${getCurrentDateTime()}`,
+                    filename: `EnergyProduction_${getCurrentDateTime()}`,
                     buttons: {
                         contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                            menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                         },
                     },
                 },
             });
 
-            // Create the second Highcharts chart for energyNetIncomeCalculation
             Highcharts.chart('chart6', {
                 title: {
-                    text: energyProductionTitle,
+                    text: 'Energy Net Income Calculation - Year: 2008 to 2098',
                 },
                 xAxis: {
                     categories: netYears,
@@ -287,53 +546,131 @@ function drawEnergyCharts() {
                 series: [
                     { name: 'Wind', data: windIncome, color: 'red' },
                     { name: 'Solar', data: solarIncome, color: 'green' },
-                    // { name: 'US$', data: us$0Income, color: 'yellow' },
                 ],
-                // Add exporting options
                 exporting: {
                     filename: `EnergyNetIncome_${getCurrentDateTime()}`,
                     buttons: {
                         contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                            menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                         },
                     },
                 },
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
         });
+    });
 }
 
-function drawClimateCharts() {
-    fetch('/calculateClimate')
-        .then(response => response.json())
-        .then(data => {
-            const getCropIncomeData = JSON.parse(data.crop_income_img);
-            const getCropInsuranceData = JSON.parse(data.insur_income_img);
+function drawFarmCharts() {
+    // Helper functions
+    function parseNetNetIncomeData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(19);
+        const data = {
+            crop: [],
+            energy: [],
+            all: []
+        };
+        const columnNames = cropsDataLines[0].split(',');
+        const cropYIndex = columnNames.indexOf('"y"');
+        const energyYIndex = columnNames.indexOf('"y"', cropYIndex + 1);
+        const allYIndex = columnNames.indexOf('"y"', energyYIndex + 1);
 
-            const cropIncomeTitle = getCropIncomeData.Crop_Income.total_farm_net_income;
-            console.log(cropIncomeTitle)
-            const cropInsuranceTitle = getCropInsuranceData.Insurance_Income.total_income_from_crop_insurance;
-            console.log(cropInsuranceTitle)
-    
-            const years = getCropIncomeData.Crop_Income.Year.map(Number);
-            const cropData = getCropIncomeData.Crop_Income.Crop.map(Number);
-            const energyData = getCropIncomeData.Crop_Income.Energy.map(Number);
-            const allData = getCropIncomeData.Crop_Income.All.map(Number);
-            const usData =  getCropIncomeData.Crop_Income.US$0.map(Number);
-    
-            const year = getCropInsuranceData.Insurance_Income.Year.map(Number);
-            const CornData = getCropInsuranceData.Insurance_Income.Corn.map(Number);
-            const WheatData = getCropInsuranceData.Insurance_Income.Wheat.map(Number);
-            const SoyaData = getCropInsuranceData.Insurance_Income.Soybean.map(Number);
-            const getsgData = getCropInsuranceData.Insurance_Income.SG.map(Number);
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const cropY = parseFloat(values[cropYIndex].replace(/"/g, ''));
+            const energyY = parseFloat(values[energyYIndex].replace(/"/g, ''));
+            const allY = parseFloat(values[allYIndex].replace(/"/g, ''));
 
-            // Create the first Highcharts chart for farmEnergyProduction
+            data.crop.push(cropY);
+            data.energy.push(energyY);
+            data.all.push(allY);
+        }
+        return data;
+    }
+
+    function parseCropInsuranceIncomeData(csvData) {
+        const lines = csvData.trim().split('\n');
+        const cropsDataLines = lines.slice(19);
+        const data = {
+            Corn: [],
+            Wheat: [],
+            Soybeans: [],
+            SG: []
+        };
+        const columnNames = cropsDataLines[0].split(',');
+        const cornYIndex = columnNames.indexOf('"y"');
+        const wheatYIndex = columnNames.indexOf('"y"', cornYIndex + 1);
+        const soybeansYIndex = columnNames.indexOf('"y"', wheatYIndex + 1);
+        const sgYIndex = columnNames.indexOf('"y"', soybeansYIndex + 1);
+
+        for (let i = 1; i < cropsDataLines.length; i++) {
+            const line = cropsDataLines[i];
+            const values = line.split(',');
+            const cornY = parseFloat(values[cornYIndex].replace(/"/g, ''));
+            const wheatY = parseFloat(values[wheatYIndex].replace(/"/g, ''));
+            const soybeansY = parseFloat(values[soybeansYIndex].replace(/"/g, ''));
+            const sgY = parseFloat(values[sgYIndex].replace(/"/g, ''));
+
+            data.Corn.push(cornY);
+            data.Wheat.push(wheatY);
+            data.Soybeans.push(soybeansY);
+            data.SG.push(sgY);
+        }
+        return data;
+    }
+
+    function fetchAndParseCSV(url, parser, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(csvText => {
+                const parsedData = parser(csvText);
+                callback(parsedData);
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing CSV:', error);
+            });
+    }
+
+    function getCurrentDateTime() {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        const now = new Date();
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        return `${day}${month}${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    const key = sessionStorage.getItem("combination");
+    if (!key) {
+        alert("Please calculate the model first.");
+        return;
+    }
+
+    const farmNetIncomeURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/total-net-income.csv`;
+    const farmInsuranceURL = `https://raw.githubusercontent.com/Pratik-Nikam/FEWtureFarm/main/data/outputs/${key}/income-from-crop-insurance.csv`;
+
+    fetchAndParseCSV(farmNetIncomeURL, parseNetNetIncomeData, (netNetIncomeData) => {
+        fetchAndParseCSV(farmInsuranceURL, parseCropInsuranceIncomeData, (cropInsuranceIncomeData) => {
+            const years = Array.from(Array(netNetIncomeData.crop.length).keys());
+            const cropData = netNetIncomeData.crop;
+            const energyData = netNetIncomeData.energy;
+            const allData = netNetIncomeData.all;
+            const insuranceYears = Array.from(Array(cropInsuranceIncomeData.Corn.length).keys());
+            const cornData = cropInsuranceIncomeData.Corn;
+            const wheatData = cropInsuranceIncomeData.Wheat;
+            const soybeansData = cropInsuranceIncomeData.Soybeans;
+            const sgData = cropInsuranceIncomeData.SG;
+
             Highcharts.chart('chart7', {
                 title: {
-                    text: cropIncomeTitle,
-
+                    text: 'Total Farm Net Income - Year: 2008 to 2098',
                 },
                 xAxis: {
                     categories: years,
@@ -343,36 +680,33 @@ function drawClimateCharts() {
                 },
                 yAxis: {
                     title: {
-                        text: '<b>Total Net Income ($) </b>',
+                        text: '<b>Total Net Income ($)</b>',
                     },
                 },
                 series: [
-                    { name: 'Crop', data: cropData, color: 'red'},
-                    { name: 'Energy', data: energyData, color: 'green'},
-                    { name: 'All', data: allData, color: 'blue'},
-                    { name: 'US$', data: usData, color: 'orange'}
+                    { name: 'Crop', data: cropData, color: 'red' },
+                    { name: 'Energy', data: energyData, color: 'green' },
+                    { name: 'All', data: allData, color: 'blue' },
                 ],
-                // Add exporting options
                 exporting: {
                     filename: `TotalFarmNetIncome_${getCurrentDateTime()}`,
                     buttons: {
                         contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                            menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                         },
                     },
                 },
             });
 
-            // Create the second Highcharts chart for energyNetIncomeCalculation
             Highcharts.chart('chart8', {
                 chart: {
-                    type: 'scatter', 
+                    type: 'scatter',
                 },
                 title: {
-                    text: cropInsuranceTitle,
+                    text: 'Total Income from Crop Insurance - Year: 2008 to 2098',
                 },
                 xAxis: {
-                    categories: year,
+                    categories: insuranceYears,
                     title: {
                         text: '<b>Year since the beginning of the simulation</b>',
                     },
@@ -383,34 +717,55 @@ function drawClimateCharts() {
                     },
                 },
                 series: [
-                    { name: 'Corn', data: CornData, color: 'red'},
-                    { name: 'Wheat', data: WheatData, color: 'green'},
-                    { name: 'Soybeans', data: SoyaData, color: 'blue'},
-                    { name: 'SG', data: getsgData, color: 'yellow'}
+                    { name: 'Corn', data: cornData, color: 'red' },
+                    { name: 'Wheat', data: wheatData, color: 'green' },
+                    { name: 'Soybeans', data: soybeansData, color: 'blue' },
+                    { name: 'SG', data: sgData, color: 'yellow' }
                 ],
-                // Add exporting options
                 exporting: {
-                    filename: `TotalIncome_${getCurrentDateTime()}`,
+                    filename: `TotalIncomeFromCropInsurance_${getCurrentDateTime()}`,
                     buttons: {
                         contextButton: {
-                            menuItems:["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS","downloadCSV"],
+                            menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "downloadXLS", "downloadCSV"],
                         },
                     },
                 },
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
         });
+    });
 }
 
 
 
-// Call the drawCharts function when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    drawAgricultureCharts();
-    drawWaterCharts();
-    drawEnergyCharts();
-    drawClimateCharts();
-});
+function showCharts(chartType) {
+    // Hide all chart containers
+    document.querySelectorAll('.charts').forEach(container => {
+        container.style.display = 'none';
+    });
+
+    // Show the relevant chart container
+    if (chartType === 'agriculture') {
+        drawAgricultureCharts();
+        document.getElementById('agriculture-charts').style.display = 'block';
+    } else if (chartType === 'water') {
+        drawWaterCharts();
+        document.getElementById('water-charts').style.display = 'block';
+    } else if (chartType === 'energy') {
+        drawEnergyCharts();
+        document.getElementById('energy-charts').style.display = 'block';
+    } else if (chartType === 'farm') {
+        drawFarmCharts();
+        document.getElementById('farm-charts').style.display = 'block';
+    } else if (chartType === 'all') {
+        drawAgricultureCharts();
+        drawWaterCharts();
+        drawEnergyCharts();
+        drawFarmCharts();
+        document.getElementById('agriculture-charts').style.display = 'block';
+        document.getElementById('water-charts').style.display = 'block';
+        document.getElementById('energy-charts').style.display = 'block';
+        document.getElementById('farm-charts').style.display = 'block';
+    }
+}
+
 

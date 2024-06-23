@@ -128,7 +128,7 @@ function drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData) {
     // Create the first Highcharts chart for farmNetIncome
     Highcharts.chart('chart1', {
         title: {
-            text: 'Total Farm Net Income',
+            text: 'Total Farm Net Income - Year: 2008 to 2098',
         },
         xAxis: {
             categories: years,
@@ -163,7 +163,7 @@ function drawFarmCharts(netNetIncomeData, cropInsuranceIncomeData) {
             type: 'scatter',
         },
         title: {
-            text: 'Total Income from Crop Insurance',
+            text: 'Total Income from Crop Insurance - Year: 2008 to 2098',
         },
         xAxis: {
             categories: insuranceYears,

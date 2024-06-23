@@ -3,13 +3,13 @@
 <head>
     <title>Energy</title>
     <!-- Link to the CSS file for styling the energy charts -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='energy.css') }}">
+    <link rel="stylesheet" type="text/css" href="../static/energy.css">
 </head>
 <body>
     <!-- Container for the first chart -->
     <div class="chart-container">
         <!-- Link to navigate back to the Chart Window page -->
-        <a href="/ChartWindow" class="back-link"></a>
+        <a href="../template/ChartWindow.html" class="back-link"></a>
         <!-- Chart 1: Farm Energy Production Chart -->
         <div class="chart" id="chart1">
             <canvas id="farmEnergyProductionChart"></canvas>
@@ -19,7 +19,7 @@
     <!-- Container for the second chart -->
     <div class="chart-container1">
         <!-- Link to navigate back to the Chart Window page -->
-        <a href="/ChartWindow" class="back-link"></a>
+        <a href="../template/ChartWindow.html" class="back-link"></a>
         <!-- Chart 2: Energy Net Income Chart -->
         <div class="chart" id="chart2">
             <canvas id="energyNetIncomeChart"></canvas>
@@ -33,6 +33,6 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.2.2/html2canvas.min.js"></script>
     <!-- Link to the JavaScript file that handles energy charts functionalities -->
-    <script src="{{ url_for('static', filename='energy.js') }}"></script>
+    <script src="../static/energy.js"></script>
 </body>
 </html>

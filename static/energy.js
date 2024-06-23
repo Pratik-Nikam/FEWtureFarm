@@ -136,7 +136,7 @@ function drawEnergyCharts(EnergyProductionData, EnergyIncomeData) {
     // Create the first Highcharts chart for farmEnergyProduction
     Highcharts.chart('chart1', {
         title: {
-            text: 'Farm Energy Production',
+            text: 'Farm Energy Production - Year: 2008 to 2098',
         },
         xAxis: {
             categories: years,
@@ -168,7 +168,7 @@ function drawEnergyCharts(EnergyProductionData, EnergyIncomeData) {
     // Create the second Highcharts chart for energyNetIncomeCalculation
     Highcharts.chart('chart2', {
         title: {
-            text: 'Energy Net Income Calculation',
+            text: 'Energy Net Income Calculation - Year: 2008 to 2098',
         },
         xAxis: {
             categories: netYears,

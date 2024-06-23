@@ -96,77 +96,77 @@ $(document).ready(function () {
         energy: {
             E1: {
                 energy_value: 38,
-                loan_term: 20,
+                loan_term: 1,
                 interest: 3,
                 num_wind_turbines: 4,
                 nyear_w: 30,
                 capacity_w: 2,
-                cost_w: 1470,
+                cost_w: 1350,
                 degrade_w: 1,
                 wind_factor: 25,
-                num_panel_sets: 10,
+                num_panel_sets: 8,
                 nyear_s: 25,
-                cost_s: 1750,
+                cost_s: 1100,
                 capacity_s: 250,
                 degrade_s: 1,
-                sun_hrs: 6,
+                sun_hrs: 5.6,
                 ptc_w: 0.03,
                 itc_s: 30,
                 ptc_s: 0.03,
             },
             E2: {
-                energy_value: 45,
-                loan_term: 20,
+                energy_value: 38,
+                loan_term: 1,
                 interest: 3,
                 num_wind_turbines: 4,
                 nyear_w: 30,
                 capacity_w: 2,
-                cost_w: 1470,
+                cost_w: 1350,
                 degrade_w: 1,
                 wind_factor: 42,
-                num_panel_sets: 10,
+                num_panel_sets: 8,
                 nyear_s: 25,
-                cost_s: 1750,
+                cost_s: 1100,
                 capacity_s: 250,
                 degrade_s: 1,
-                sun_hrs: 6,
+                sun_hrs: 5.6,
                 ptc_w: 0.03,
                 itc_s: 30,
                 ptc_s: 0.03,
             },
             E3: {
                 energy_value: 45,
-                loan_term: 20,
+                loan_term: 1,
                 interest: 3,
                 num_wind_turbines: 4,
                 nyear_w: 30,
                 capacity_w: 2,
-                cost_w: 1470,
+                cost_w: 1350,
                 degrade_w: 1,
                 wind_factor: 42,
-                num_panel_sets: 10,
+                num_panel_sets: 8,
                 nyear_s: 25,
-                cost_s: 1750,
+                cost_s: 1100,
                 capacity_s: 250,
                 degrade_s: 1,
-                sun_hrs: 6,
+                sun_hrs: 5.6,
                 ptc_w: 0.03,
                 itc_s: 30,
                 ptc_s: 0.03,
             },
             E4: {
                 energy_value: 45,
-                loan_term: 20,
+                loan_term: 1,
                 interest: 3,
                 num_wind_turbines: 4,
                 nyear_w: 30,
                 capacity_w: 2,
-                cost_w: 1470,
+                cost_w: 1350,
                 degrade_w: 1,
                 wind_factor: 42,
-                num_panel_sets: 10,
+                num_panel_sets: 8,
                 nyear_s: 25,
-                cost_s: 1750,
+                cost_s: 1100,
                 capacity_s: 250,
                 degrade_s: 1,
                 sun_hrs: 8,
@@ -177,7 +177,7 @@ $(document).ready(function () {
         },
         water: {
             
-            W1: { aquifier_level: 300, min_aquifier_level: 30 },
+            W1: { aquifier_level: 200, min_aquifier_level: 30 },
         },
         climate: {
             C1: { future_processes: "Repeat Historical", climate_model: null },
@@ -191,11 +191,14 @@ $(document).ready(function () {
 
     function findCombination(formData) {
         // Initialize variables to hold keys for different categories
+        // console.log(formData);
         let agriKey, energyKey, waterKey, climateKey;
+        
     
         // Loop through agriculture data to find a matching key
         for (const [key, value] of Object.entries(data.agriculture)) {
             // Check if the current agriculture data matches the form data
+                        
             if (
                 JSON.stringify(value) ===
                 JSON.stringify({
@@ -209,9 +212,11 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
+        console.log(agriKey);
     
         // Loop through energy data to find a matching key
         for (const [key, value] of Object.entries(data.energy)) {
+
             // Check if the current energy data matches the form data
             if (
                 JSON.stringify(value) ===
@@ -230,7 +235,7 @@ $(document).ready(function () {
                     cost_s: parseInt(formData.cost_s),
                     capacity_s: parseInt(formData.capacity_s),
                     degrade_s: parseInt(formData.degrade_s),
-                    sun_hrs: parseInt(formData.sun_hrs),
+                    sun_hrs: parseFloat(formData.sun_hrs),
                     ptc_w: parseFloat(formData.ptc_w),
                     itc_s: parseFloat(formData.itc_s),
                     ptc_s: parseFloat(formData.ptc_s),
@@ -240,7 +245,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
-    
+        console.log(energyKey);
         // Loop through water data to find a matching key
         for (const [key, value] of Object.entries(data.water)) {
             // Check if the current water data matches the form data
@@ -255,6 +260,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
+        console.log(waterKey);
     
         // Loop through climate data to find a matching key
         for (const [key, value] of Object.entries(data.climate)) {
@@ -270,10 +276,12 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
+        console.log(climateKey);
     
         // Check if keys for all categories are found
         if (agriKey && energyKey && waterKey && climateKey) {
             // If keys for all categories are found, return the combination
+            // console.log(`${climateKey}${agriKey}${energyKey}${waterKey}`);
             return `${climateKey}${agriKey}${energyKey}${waterKey}`;
         } else {
             // If any key is missing, return a message indicating no matching combination found

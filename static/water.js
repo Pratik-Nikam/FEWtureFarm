@@ -120,7 +120,7 @@ function drawWaterChart() {
         // Create Highcharts chart for Crop Groundwater Irrigation
         Highcharts.chart('chart1', {
             title: {
-                text: 'Crop Groundwater Irrigation',
+                text: 'Crop Groundwater Irrigation - Year: 2008 to 2098',
             },
             xAxis: {
                 categories: years,
@@ -158,7 +158,7 @@ function drawWaterChart() {
         // Create Highcharts chart for Groundwater Level
         Highcharts.chart('chart2', {
             title: {
-                text: 'Groundwater Level',
+                text: 'Groundwater Level - Year: 2008 to 2098',
             },
             xAxis: {
                 categories: years,
