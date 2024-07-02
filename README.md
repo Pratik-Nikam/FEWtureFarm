@@ -25,10 +25,10 @@ To run this project locally, follow these steps:
 
 2. **Open the application:
 ```bash
-    Open index.html in your preferred web browser.
+    Open homepage.html in your preferred web browser.
 
     Usage:
-        Navigate to the web application: Open index.html in your web browser.
+        Navigate to the web application: Open homepage.html in your web browser.
         Input Data: Select the desired options for climate conditions, crop choices, and irrigation methods.
         View Results: The application will display the corresponding result from the predefined list of combinations.
 

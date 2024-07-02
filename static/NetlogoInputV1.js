@@ -1,5 +1,3 @@
-console.log("NetlogoInputV1.js loaded");
-
 $(document).ready(function () {
     // Update the slider value display
     $("#num_of_years").on("input", function () {
@@ -38,8 +36,8 @@ $(document).ready(function () {
         // Find combination based on form data
         var combination = findCombination(formattedData);
         sessionStorage.setItem("combination", combination);
-        console.log(sessionStorage.getItem("combination"));
-        console.log("Combination: " + combination);
+        // console.log(sessionStorage.getItem("combination"));
+        // console.log("Combination: " + combination);
     }
 
     // Function to convert form data to CSV format
@@ -212,7 +210,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
-        console.log(agriKey);
+        // console.log(agriKey);
     
         // Loop through energy data to find a matching key
         for (const [key, value] of Object.entries(data.energy)) {
@@ -245,7 +243,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
-        console.log(energyKey);
+        // console.log(energyKey);
         // Loop through water data to find a matching key
         for (const [key, value] of Object.entries(data.water)) {
             // Check if the current water data matches the form data
@@ -260,7 +258,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
-        console.log(waterKey);
+        // console.log(waterKey);
     
         // Loop through climate data to find a matching key
         for (const [key, value] of Object.entries(data.climate)) {
@@ -276,7 +274,7 @@ $(document).ready(function () {
                 break; // Break the loop since the key is found
             }
         }
-        console.log(climateKey);
+        // console.log(climateKey);
     
         // Check if keys for all categories are found
         if (agriKey && energyKey && waterKey && climateKey) {
