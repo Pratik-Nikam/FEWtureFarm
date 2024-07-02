@@ -152,8 +152,7 @@
                                         <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
                                             <div class="card-body">
                                                 <div class="form-container">
-                                                    <label for="energy_note">Note: Do not change dropdown
-                                                        values.</label>
+                                                    <label for="energy_note">Note: Do not change dropdown values.</label>
                                                     <label for="energy_area_option">Options Available:</label>
                                                     <button id="lessButton" class="option-button active"
                                                         style="margin-right: 5px;">Base Case</button>
@@ -480,26 +479,14 @@
                             </div>
                             <div class="tab-pane" id="notes-circumstances" role="tabpanel" style="display: none;">
                                 <p>This Limited Runs version of FEWtures Farms is supported by a set of output files
-                                    produced from a program called FEWCalc built using NetLogo version ***. The Limited
-                                    Runs interface is produced by programs using *** and HTML.</p>
-                                <p>The *** and HTML programs and data sets for the Limited Runs version of FEWture Farms
-                                    are available at *** [GitHub site or where KUIT prefers]. These can be used to
-                                    change the Limited Runs interface. Changes to the available runs require NetLogo
-                                    runs, as described below.</p>
-                                <p>The *** and HTML programs for the FEWCalc NetLogo program are available at the GitHub
-                                    site *** [ or wherever the KUIT people want the programs to be]. Together the
-                                    interface and FEWCalc program are referred to as FEWture Farms. NetLogo does not
-                                    conform to recent web security protocols, so program download is required to obtain
-                                    simulations not supported by the Limited Runs version of FEWture Farms. FEWture
-                                    Farms can be downloaded as follows.</p>
-                                <p>a. Download FEWCalc from the GitHub site *** [the site listed in Phetheet et al
-                                    2021a,b]</p>
-                                <p>b. Use the instruction at the GitHub site and the appendices of the Phetheet et al
-                                    (2021a) article to load and run FEWCalc.</p>
-                                <p>c. Download the interface from ***.</p>
-                                <p>d. Do the following. ***set paths, anything else?</p>
-                                <p>e. Use the interface to run FEWCalc. Access to the full range of variable values are
-                                    now available.</p>
+                                    produced from a program called FEWCalc built using NetLogo version 6.3. The Limited
+                                    Runs interface is produced by programs using a static website (developed using HTML, CSS, Javascript) available at 
+                                    <a href="https://github.com/Pratik-Nikam/FEWtureFarm">GitHub repository</a>.
+                                    <p>If you want to run the full set of features with updated GUI developed using Python, Flask and JS, you can go to the <a href="https://github.com/Pratik-Nikam/FarmFEWtures">GitHub repository</a> and follow the steps given in the README.md file.</p>
+                                    <p>If you want to run this project using NetLogo on your system, you can follow the steps available at <a href="https://github.com/JPhetheet/FEWCalc-Instructions">https://github.com/JPhetheet/FEWCalc-Instructions</a>.</p>
+                                 </p>
+                                 
+                               
                             </div>
                         </div>
                     </div>
@@ -611,6 +598,127 @@
             }
         }
     </script>
+        <script>
+            const optionButtons = document.querySelectorAll('.option-button');
+    
+            function resetButtonColors() {
+                optionButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+            }
+    
+            optionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    resetButtonColors();
+                    button.classList.add('active');
+                    setFormValues(button.id);
+                });
+            });
+    
+            function setFormValues(buttonId) {
+                const energyValue = document.getElementById('energy_value');
+                const loanTerm = document.getElementById('loan_term');
+                const interest = document.getElementById('interest');
+                const numWindTurbines = document.getElementById('num_wind_turbines');
+                const nyearW = document.getElementById('nyear_w');
+                const capacityW = document.getElementById('capacity_w');
+                const costW = document.getElementById('cost_w');
+                const degradeW = document.getElementById('degrade_w');
+                const windFactor = document.getElementById('wind_factor');
+                const numPanelSets = document.getElementById('num_panel_sets');
+                const nyearS = document.getElementById('nyear_s');
+                const costS = document.getElementById('cost_s');
+                const capacityS = document.getElementById('capacity_s');
+                const degradeS = document.getElementById('degrade_s');
+                const sunHrs = document.getElementById('sun_hrs');
+                const ptcW = document.getElementById('ptc_w');
+                const itcS = document.getElementById('itc_s');
+                const ptcS = document.getElementById('ptc_s');
+    
+                switch (buttonId) {
+                    case 'lessButton':
+                        energyValue.value = "38.0";
+                        loanTerm.value = "1.0";
+                        interest.value = "3.0";
+                        numWindTurbines.value = "4";
+                        nyearW.value = "30";
+                        capacityW.value = "2";
+                        costW.value = "1350";
+                        degradeW.value = "1.0";
+                        windFactor.value = "25";
+                        numPanelSets.value = "8";
+                        nyearS.value = "25";
+                        costS.value = "1100";
+                        capacityS.value = "250";
+                        degradeS.value = "1.0";
+                        sunHrs.value = "6.0";
+                        ptcW.value = "0.03";
+                        itcS.value = "30";
+                        ptcS.value = "0.03";
+                        break;
+                    case 'moderateButton':
+                        energyValue.value = "38.0";
+                        loanTerm.value = "1.0";
+                        interest.value = "3.0";
+                        numWindTurbines.value = "4";
+                        nyearW.value = "30";
+                        capacityW.value = "2";
+                        costW.value = "1350";
+                        degradeW.value = "1.0";
+                        windFactor.value = "42";
+                        numPanelSets.value = "8";
+                        nyearS.value = "25";
+                        costS.value = "1100";
+                        capacityS.value = "250";
+                        degradeS.value = "1.0";
+                        sunHrs.value = "6.0";
+                        ptcW.value = "0.03";
+                        itcS.value = "30";
+                        ptcS.value = "0.03";
+                        break;
+                    case 'mostButton':
+                        energyValue.value = "45.0";
+                        loanTerm.value = "1.0";
+                        interest.value = "3.0";
+                        numWindTurbines.value = "4";
+                        nyearW.value = "30";
+                        capacityW.value = "2";
+                        costW.value = "1350";
+                        degradeW.value = "1.0";
+                        windFactor.value = "42";
+                        numPanelSets.value = "8";
+                        nyearS.value = "25";
+                        costS.value = "1100";
+                        capacityS.value = "250";
+                        degradeS.value = "1.0";
+                        sunHrs.value = "6.0";
+                        ptcW.value = "0.03";
+                        itcS.value = "30";
+                        ptcS.value = "0.03";
+                        break;
+                    case 'mostSunButton':
+                        energyValue.value = "45.0";
+                        loanTerm.value = "1.0";
+                        interest.value = "3.0";
+                        numWindTurbines.value = "4";
+                        nyearW.value = "30";
+                        capacityW.value = "2";
+                        costW.value = "1350";
+                        degradeW.value = "1.0";
+                        windFactor.value = "42";
+                        numPanelSets.value = "8";
+                        nyearS.value = "25";
+                        costS.value = "1100";
+                        capacityS.value = "250";
+                        degradeS.value = "1.0";
+                        sunHrs.value = "8.0";
+                        ptcW.value = "0.03";
+                        itcS.value = "30";
+                        ptcS.value = "0.03";
+                        break;
+                }
+            }
+        </script>
 
 </body>
 
