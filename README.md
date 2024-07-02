@@ -24,12 +24,13 @@ To run this project locally, follow these steps:
    cd FEWtureFarm
 
 2. **Open the application:
-```Open index.html in your preferred web browser.
+```bash
+    Open index.html in your preferred web browser.
 
-Usage
-Navigate to the web application: Open index.html in your web browser.
-Input Data: Select the desired options for climate conditions, crop choices, and irrigation methods.
-View Results: The application will display the corresponding result from the predefined list of combinations.
+    Usage:
+        Navigate to the web application: Open index.html in your web browser.
+        Input Data: Select the desired options for climate conditions, crop choices, and irrigation methods.
+        View Results: The application will display the corresponding result from the predefined list of combinations.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
