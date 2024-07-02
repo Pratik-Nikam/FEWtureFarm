@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Netlogo Simulation</title>
+    <!-- Commented out original favicon path -->
+    <!-- <link rel="icon" href="/static/img/Farm-Features.ico" type="image/x-icon" /> -->
+    <!-- Updated favicon path -->
+    <link rel="icon" href="../static/img/Farm-Features.ico" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://demo.voidcoders.com/htmldemo/fitgear/main-files/assets/css/animate.css" />
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+    <!-- Commented out original CSS path -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='NetlogoInputV1.css') }}" /> -->
+    <!-- Updated CSS path -->
+    <link rel="stylesheet" type="text/css" href="../static/NetlogoInputV1.css" />
+    <style>
+        /* Center loader */
+        .loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        /* Blur the page */
+        .blur {
+            filter: blur(5px);
+            /* Adjust the blur amount as needed */
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader element -->
+    <div id="loader" class="loader"></div>
+    <section class="faq">
+        <div class="container">
+            <!-- Link to homepage -->
+            <a href="../template/homepage.html" class="back-link homepage-link">Homepage</a>
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8 text-center">
+                    <div class="section-title">
+                        <h1>Farm FEWtures NetLogo Simulation</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="accordion" id="accordionExample">
+                        <form id="MainForm">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <!-- Agriculture Form -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapseOne"
+                                                    aria-expanded="false" aria-controls="collapseOne">
+                                                    Form related to Agriculture
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-container">
+                                                    <!-- Options for agriculture configuration -->
+                                                    <label for="agriculture_note">Note: Do not change dropdown values.</label>
+                                                    <label for="corn_area_option">Options Available:</label>
+                                                    <button id="buttonA1" style="margin-right: 5px;">Corn
+                                                        Dominated</button>
+                                                    <button id="buttonA2">Multi Crop</button>
+
+                                                    <!-- Dropdown for corn area -->
+                                                    <label for="corn_area">Corn Area:</label>
+                                                    <select id="corn_area" name="corn_area">
+                                                        <option value="150">150</option>
+                                                        <option value="500" selected>500</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <!-- Dropdown for wheat area -->
+                                                    <label for="wheat_area">Wheat Area:</label>
+                                                    <select id="wheat_area" name="wheat_area">
+                                                        <option value="125" selected>125</option>
+                                                        <option value="200">200</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <!-- Dropdown for soybeans area -->
+                                                    <label for="soybeans_area">Soybeans Area:</label>
+                                                    <select id="soybeans_area" name="soybeans_area">
+                                                        <option value="0" selected>0</option>
+                                                        <option value="200">200</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <!-- Dropdown for sg area -->
+                                                    <label for="sg_area">SG Area:</label>
+                                                    <select id="sg_area" name="sg_area">
+                                                        <option value="125" selected>125</option>
+                                                        <option value="200">200</option>
+                                                    </select>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Energy Form -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                    Form related to Energy
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-container">
+                                                    <label for="energy_note">Note: Do not change dropdown values.</label>
+                                                    <label for="energy_area_option">Options Available:</label>
+                                                    <!-- Buttons for energy options -->
+                                                    <button id="lessButton" class="option-button active"
+                                                        style="margin-right: 5px;">Base Case</button>
+                                                    <button id="moderateButton" class="option-button"
+                                                        style="margin-right: 5px;">Inc Wind Factor</button>
+                                                    <button id="mostButton" class="option-button"
+                                                        style="margin-right: 5px;">Inc Energy Value</button>
+                                                    <button id="mostSunButton" class="option-button"
+                                                        style="margin-right: 5px;">Inc Sun hrs</button>
+
+                                                    <!-- Dropdowns for various energy parameters -->
+                                                    <label for="energy_value">Energy Value ($/MWh):</label>
+                                                    <select id="energy_value" name="energy_value">
+                                                        <option value="38.0">38.0</option>
+                                                        <option value="45.0">45.0</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <label for="loan_term">Loan Term (Years):</label>
+                                                    <!-- <select id="loan_term" name="loan_term">
+                                                        <option value="20.0">20.0</option>
+                                                    </select> -->
+                                                    <input type="text" id="loan_term" name="loan_term" value="1.0" readonly class="readonly-input">
+
+                                                    <br />
+
+                                                    <label for="interest">Interest (%):</label>
+                                                    <!-- <select id="interest" name="interest" readonly style="background-color: #e0e0e0;">
+                                                        <option value="3.0">3.0</option>
+                                                    </select> -->
+                                                    <input type="text" id="interest" name="interest" value="3.0" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="num_wind_turbines">Number of Wind Turbines (#):</label>
+                                                    <!-- <select id="num_wind_turbines" name="num_wind_turbines">
+                                                        <option value="4">4</option>
+                                                    </select> -->
+                                                    <input type="text" id="num_wind_turbines" name="num_wind_turbines" value="4" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="nyear_w">Number of years (Wind):</label>
+                                                    <!-- <select id="nyear_w" name="nyear_w">
+                                                        <option value="30">30</option>
+                                                    </select> -->
+                                                    <input type="text" id="nyear_w" name="nyear_w" value="30" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="capacity_w">Capacity (Wind) (MW):</label>
+                                                    <!-- <select id="capacity_w" name="capacity_w">
+                                                        <option value="2">2</option>
+                                                    </select> -->
+                                                    <input type="text" id="capacity_w" name="capacity_w" value="2" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="cost_w">Cost (Wind) ($/kW):</label>
+                                                    <!-- <select id="cost_w" name="cost_w">
+                                                        <option value="1470">1470</option>
+                                                    </select> -->
+                                                    <input type="text" id="cost_w" name="cost_w" value="1350" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="degrade_w">Degrade (Wind) (%/Yr):</label>
+                                                    <!-- <select id="degrade_w" name="degrade_w">
+                                                        <option value="1.0">1.0</option>
+                                                    </select> -->
+                                                    <input type="text" id="degrade_w" name="degrade_w" value="1.0" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="wind_factor">Wind Factor (%):</label>
+                                                    <select id="wind_factor" name="wind_factor">
+                                                        <option value="25">25</option>
+                                                        <option value="42">42</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <label for="num_panel_sets">Number of Panel Sets (1 set = 1,000
+                                                        panels):</label>
+                                                    <!-- <select id="num_panel_sets" name="num_panel_sets">
+                                                        <option value="10">10</option>
+                                                    </select> -->
+                                                    <input type="text" id="num_panel_sets" name="num_panel_sets" value="8" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="nyear_s">Number of years (Solar) (Years):</label>
+                                                    <!-- <select id="nyear_s" name="nyear_s">
+                                                        <option value="25">25</option>
+                                                    </select> -->
+                                                    <input type="text" id="nyear_s" name="nyear_s" value="25" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="cost_s">Cost (Solar) ($/kW):</label>
+                                                    <!-- <select id="cost_s" name="cost_s">
+                                                        <option value="1750">1750</option>
+                                                    </select> -->
+                                                    <input type="text" id="cost_s" name="cost_s" value="1100" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="capacity_s">Capacity (Solar) (W):</label>
+                                                    <!-- <select id="capacity_s" name="capacity_s">
+                                                        <option value="250">250</option>
+                                                    </select> -->
+                                                    <input type="text" id="capacity_s" name="capacity_s" value="250" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="degrade_s">Degrade (Solar) (%/yr):</label>
+                                                    <!-- <select id="degrade_s" name="degrade_s">
+                                                        <option value="1.0">1.0</option>
+                                                    </select> -->
+                                                    <input type="text" id="degrade_s" name="degrade_s" value="1.0" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="sun_hrs">Sun Hours (hrs/day):</label>
+                                                    <select id="sun_hrs" name="sun_hrs">
+                                                        <option value="6.0">6.0</option>
+                                                        <option value="8.0">8.0</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <label for="ptc_w">PTC (Wind) ($/kWh):</label>
+                                                    <!-- <select id="ptc_w" name="ptc_w">
+                                                        <option value="0.03">0.03</option>
+                                                    </select> -->
+                                                    <input type="text" id="ptc_w" name="ptc_w" value="0.03" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="itc_s">ITC (Solar) (%):</label>
+                                                    <!-- <select id="itc_s" name="itc_s">
+                                                        <option value="30">30</option>
+                                                    </select> -->
+                                                    <input type="text" id="itc_s" name="itc_s" value="30" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <label for="ptc_s">PTC (Solar) ($/kWh):</label>
+                                                    <!-- <select id="ptc_s" name="ptc_s">
+                                                        <option value="0.03">0.03</option>
+                                                    </select> -->
+                                                    <input type="text" id="ptc_s" name="ptc_s" value="0.03" readonly class="readonly-input">
+                                                    <br />
+                                                    <!-- <label>Note: Relative to Phetheet et al. (2001a,b), value for Cost (Wind) was changed from 1470 $/kW to 1350 $/kW and Cost (Solar) was changed from 1750 $/kW to 1100 $/kW. The newer values reflect price conditions as of 2024 (Xuebo Liu, oral commun, 2024)</label> -->
+                                                    <p>
+                                                        <strong>Note:</strong> Relative to Phetheet et al. (2001a,b), value for <strong>Cost (Wind)</strong> was changed from <strong>1470 $/kW</strong> to <strong>1350 $/kW</strong> and <strong>Cost (Solar)</strong> was changed from <strong>1750 $/kW</strong> to <strong>1100 $/kW</strong>. The newer values reflect price conditions as of <strong>2024</strong> (<strong>Xuebo Liu, oral commun, 2024</strong>).
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Climate Form -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapseThree"
+                                                    aria-expanded="false" aria-controls="collapseThree">
+                                                    Form related to Climate
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-container">
+                                                    <label for="climate_note">Note: All options are available for selection.</label>
+                                                    <label for="future_processes">Future Process:</label>
+                                                    <select id="future_processes" name="future_processes">
+                                                        <option value="Repeat Historical">
+                                                            Repeat Historical
+                                                        </option>
+                                                        <option value="Wetter Future">
+                                                            Wetter Future
+                                                        </option>
+                                                        <option value="Dryer Future">Dryer Future</option>
+                                                        <option value="GCM">GCM</option>
+                                                    </select>
+                                                    <br />
+
+                                                    <label for="climate_model">For GCM (Climate Model):</label>
+                                                    <select id="climate_model" name="climate_model">
+                                                        <option value="RCP4.5">RCP4.5</option>
+                                                        <option value="RCP8.5">RCP8.5</option>
+                                                    </select>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6 col-lg-6">
+                                    <!-- Water Form -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapse5"
+                                                    aria-expanded="false" aria-controls="collapseOne">
+                                                    Form related to Water
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapse5" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-container">
+                                                    <label>Note: No alternative options are available</label>
+                                                    <!-- Dropdown for aquifer level -->
+                                                    <label for="aquifier_level">Aquifier Level (ft):</label>
+                                                    <!-- <select id="aquifier_level" name="aquifier_level">
+                                                        <option value="300" selected>300</option>
+                                                    </select> -->
+                                                    <input type="text" id="aquifier_level" name="aquifier_level" value="200" readonly class="readonly-input">
+                                                    <br />
+
+                                                    <!-- Dropdown for min aquifer level -->
+                                                    <label for="min_aquifier_level">Min. Aquifier Level (ft):</label>
+                                                    <!-- <select id="min_aquifier_level" name="min_aquifier_level">
+                                                        <option value="30" selected>30</option>
+                                                    </select> -->
+                                                    <input type="text" id="min_aquifier_level" name="min_aquifier_level" value="30" readonly class="readonly-input">
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Ammonia Form (NH3) -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapse6"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                    Evaluation of Ammonia (NH3) available in the file
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapse6" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-container">
+                                                    <!-- Button to download CSV -->
+                                                    <input type="submit" value="Download CSV" id="download-button" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit and View Graphs -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button"
+                                                    data-toggle="collapse" data-target="#collapse7"
+                                                    aria-expanded="false" aria-controls="collapseThree">
+                                                    Submit to View the Graphs.
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapse7" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <label for="slider">Simulation Period : 2008 - 2098 [90 Yrs]</label>
+                                                <div class="form-container">
+                                                    <!-- Button to calculate and view graphs -->
+                                                    <input type="submit" value="Calculate" id="calculate-button" />
+                                                </div>
+                                                
+                                                <!-- Success message container -->
+                                                <!-- <div id="message-container" style="display: none; margin-top: 20px;">
+                                                    Simulation run completed successfully! Please scroll down and click
+                                                    on the relevant sections (Agriculture, Energy, Water, Farm Net
+                                                    Income) to view the graphs.
+                                                </div> -->
+                                            </div>
+                                            <!-- Modal for success message -->
+                                            <div id="myModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <p>Simulation run completed successfully! Please scroll down and
+                                                        click on the relevant sections (Agriculture, Energy, Water, Farm
+                                                        Net Income) to view the graphs.</p>
+                                                </div>
+                                            </div>
+
+                                            <style>
+                                                /* Modal styles */
+                                                .modal {
+                                                    display: none;
+                                                    /* Hidden by default */
+                                                    position: fixed;
+                                                    /* Stay in place */
+                                                    z-index: 1;
+                                                    /* Sit on top */
+                                                    left: 0;
+                                                    top: 0;
+                                                    width: 100%;
+                                                    /* Full width */
+                                                    height: 100%;
+                                                    /* Full height */
+                                                    overflow: auto;
+                                                    /* Enable scroll if needed */
+                                                    background-color: rgb(0, 0, 0);
+                                                    /* Fallback color */
+                                                    background-color: rgba(0, 0, 0, 0.4);
+                                                    /* Black w/ opacity */
+                                                }
+
+                                                .modal-content {
+                                                    background-color: #fefefe;
+                                                    margin: 15% auto;
+                                                    /* 15% from the top and centered */
+                                                    padding: 20px;
+                                                    border: 1px solid #888;
+                                                    width: 80%;
+                                                    /* Could be more or less, depending on screen size */
+                                                }
+
+                                                .close {
+                                                    color: #aaa;
+                                                    float: right;
+                                                    font-size: 28px;
+                                                    font-weight: bold;
+                                                }
+
+                                                .close:hover,
+                                                .close:focus {
+                                                    color: black;
+                                                    text-decoration: none;
+                                                    cursor: pointer;
+                                                }
+                                            </style>
+
+                                            <script>
+                                                document.getElementById('calculate-button').addEventListener('click', function () {
+                                                    var modal = document.getElementById('myModal');
+                                                    modal.style.display = 'block';
+                                                });
+
+                                                document.querySelector('.modal .close').addEventListener('click', function () {
+                                                    var modal = document.getElementById('myModal');
+                                                    modal.style.display = 'none';
+                                                });
+
+                                                window.addEventListener('click', function (event) {
+                                                    var modal = document.getElementById('myModal');
+                                                    if (event.target == modal) {
+                                                        modal.style.display = 'none';
+                                                    }
+                                                });
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+                                <!-- New Tabs Section -->
+                                <div class="tabs-section">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="notes-users-tab" data-toggle="tab" href="#notes-users" role="tab" aria-controls="notes-users" aria-selected="true">Notes for Users</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="notes-circumstances-tab" data-toggle="tab" href="#notes-circumstances" role="tab" aria-controls="notes-circumstances" aria-selected="false">Notes for those who would like to run additional circumstances of FEWture Farms</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="notes-users" role="tabpanel" aria-labelledby="notes-users-tab">
+                                            <p>1. Agricultural income by crop: As noted by Phetheet et al. (2001a, p. 5), "...the Midwest USA is a large enough producer of global corn and sorghum to affect global prices (USDA, 2020). This means higher supplies during good weather years often depress prices and vice versa. Although western Kansas is a major wheat production area in the USA, it is not large enough to influence global prices." In FEWture Farms agricultural graphs, this largely explains why corn and sorghum crops remain profitable in years when production is low.</p>
+                                            <p>2. Crop Insurance: Effects of groundwater running out are simulated. Short-term, sporadic processes such as hail storms and other extreme weather events are not simulated. This explains why crop insurance income is absent during so many years.</p>
+                                        </div>
+                                        <div class="tab-pane fade" id="notes-circumstances" role="tabpanel" aria-labelledby="notes-circumstances-tab">
+                                            <p>This Limited Runs version of FEWtures Farms is supported by a set of output files produced from a program called FEWCalc built using NetLogo version ***. The Limited Runs interface is produced by programs using *** and HTML.</p>
+                                            <p>The *** and HTML programs and data sets for the Limited Runs version of FEWture Farms are available at *** [GitHub site or where KUIT prefers]. These can be used to change the Limited Runs interface. Changes to the available runs require NetLogo runs, as described below.</p>
+                                            <p>The *** and HTML programs for the FEWCalc NetLogo program are available at the GitHub site *** [ or wherever the KUIT people want the programs to be]. Together the interface and FEWCalc program are referred to as FEWture Farms. NetLogo does not conform to recent web security protocols, so program download is required to obtain simulations not supported by the Limited Runs version of FEWture Farms. FEWture Farms can be downloaded as follows.</p>
+                                            <p>a. Download FEWCalc from the GitHub site *** [the site listed in Phetheet et al 2021a,b]</p>
+                                            <p>b. Use the instruction at the GitHub site and the appendices of the Phetheet et al (2021a) article to load and run FEWCalc.</p>
+                                            <p>c. Download the interface from ***.</p>
+                                            <p>d. Do the following. ***set paths, anything else?</p>
+                                            <p>e. Use the interface to run FEWCalc. Access to the full range of variable values are now available.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End of New Tabs Section -->
+
+
+
+
+        </div>
+    </section>
+    <!-- Iframe to display charts -->
+    <iframe src="../template/ChartWindow.html" width="100%" height="900" frameborder="0"></iframe>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- Custom JS file -->
+    <script src="../static/NetlogoInputV1.js"></script>
+
+    <!-- <script>
+        // Update the displayed value to 99
+        document.getElementById("slider-value").innerText = "99";
+    </script> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var futureProcessesSelect = document.getElementById('future_processes');
+            var climateModelSelect = document.getElementById('climate_model');
+
+            futureProcessesSelect.addEventListener('change', function () {
+                if (this.value === 'GCM') {
+                    climateModelSelect.removeAttribute('disabled');
+                } else {
+                    climateModelSelect.setAttribute('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var slider = document.getElementById("num_of_years");
+            var output = document.getElementById("slider-value");
+
+            // Display the initial value
+            output.innerHTML = slider.value;
+
+            // Set the position of the slider pointer
+            slider.addEventListener("input", function () {
+                output.innerHTML = this.value;
+            });
+        });
+    </script> -->
+
+    <script>
+        document.getElementById('buttonA1').addEventListener('click', function () {
+            document.getElementById('corn_area').value = 500;
+            document.getElementById('wheat_area').value = 125;
+            document.getElementById('soybeans_area').value = 0;
+            document.getElementById('sg_area').value = 125;
+            highlightButton('buttonA1');
+            // disableButtons();
+
+        });
+
+        document.getElementById('buttonA2').addEventListener('click', function () {
+            document.getElementById('corn_area').value = 150;
+            document.getElementById('wheat_area').value = 200;
+            document.getElementById('soybeans_area').value = 200;
+            document.getElementById('sg_area').value = 200;
+            highlightButton('buttonA2');
+            // disableButtons();
+        });
+
+        function highlightButton(selectedButtonId) {
+            document.getElementById('buttonA1').style.backgroundColor = selectedButtonId === 'buttonA1' ? '#FF69B4' : '';
+
+            document.getElementById('buttonA2').style.backgroundColor = selectedButtonId === 'buttonA2' ? '#FF69B4' : '';
+        }
+    //     function disableButtons() {
+    //         document.getElementById('corn_area').disabled = true;
+    //     document.getElementById('wheat_area').disabled = true;
+    //     document.getElementById('soybeans_area').disabled = true;
+    //     document.getElementById('sg_area').disabled = true;
+    // }
+        // Initialize the highlighted button based on the initial values
+        window.onload = function () {
+            if (document.getElementById('corn_area').value == 500) {
+                highlightButton('buttonA1');
+            } else {
+                highlightButton('buttonA2');
+            }
+        }
+
+        // Add hover effect using inline styles
+        document.getElementById('buttonA1').addEventListener('mouseover', function () {
+            if (document.getElementById('buttonA1').style.backgroundColor !== '#FF69B4') {
+                document.getElementById('buttonA1').style.backgroundColor = 'lightgray';
+            }
+        });
+        document.getElementById('buttonA2').addEventListener('mouseover', function () {
+            if (document.getElementById('buttonA2').style.backgroundColor !== '#FF69B4') {
+                document.getElementById('buttonA2').style.backgroundColor = 'lightgray';
+            }
+        });
+    </script>
+    <script>
+        const optionButtons = document.querySelectorAll('.option-button');
+
+        function resetButtonColors() {
+            optionButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+        }
+
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                resetButtonColors();
+                button.classList.add('active');
+                setFormValues(button.id);
+            });
+        });
+
+        function setFormValues(buttonId) {
+            const energyValue = document.getElementById('energy_value');
+            const loanTerm = document.getElementById('loan_term');
+            const interest = document.getElementById('interest');
+            const numWindTurbines = document.getElementById('num_wind_turbines');
+            const nyearW = document.getElementById('nyear_w');
+            const capacityW = document.getElementById('capacity_w');
+            const costW = document.getElementById('cost_w');
+            const degradeW = document.getElementById('degrade_w');
+            const windFactor = document.getElementById('wind_factor');
+            const numPanelSets = document.getElementById('num_panel_sets');
+            const nyearS = document.getElementById('nyear_s');
+            const costS = document.getElementById('cost_s');
+            const capacityS = document.getElementById('capacity_s');
+            const degradeS = document.getElementById('degrade_s');
+            const sunHrs = document.getElementById('sun_hrs');
+            const ptcW = document.getElementById('ptc_w');
+            const itcS = document.getElementById('itc_s');
+            const ptcS = document.getElementById('ptc_s');
+
+            switch (buttonId) {
+                case 'lessButton':
+                    energyValue.value = "38.0";
+                    loanTerm.value = "1.0";
+                    interest.value = "3.0";
+                    numWindTurbines.value = "4";
+                    nyearW.value = "30";
+                    capacityW.value = "2";
+                    costW.value = "1350";
+                    degradeW.value = "1.0";
+                    windFactor.value = "25";
+                    numPanelSets.value = "8";
+                    nyearS.value = "25";
+                    costS.value = "1100";
+                    capacityS.value = "250";
+                    degradeS.value = "1.0";
+                    sunHrs.value = "6.0";
+                    ptcW.value = "0.03";
+                    itcS.value = "30";
+                    ptcS.value = "0.03";
+                    break;
+                case 'moderateButton':
+                    energyValue.value = "38.0";
+                    loanTerm.value = "1.0";
+                    interest.value = "3.0";
+                    numWindTurbines.value = "4";
+                    nyearW.value = "30";
+                    capacityW.value = "2";
+                    costW.value = "1350";
+                    degradeW.value = "1.0";
+                    windFactor.value = "42";
+                    numPanelSets.value = "8";
+                    nyearS.value = "25";
+                    costS.value = "1100";
+                    capacityS.value = "250";
+                    degradeS.value = "1.0";
+                    sunHrs.value = "6.0";
+                    ptcW.value = "0.03";
+                    itcS.value = "30";
+                    ptcS.value = "0.03";
+                    break;
+                case 'mostButton':
+                    energyValue.value = "45.0";
+                    loanTerm.value = "1.0";
+                    interest.value = "3.0";
+                    numWindTurbines.value = "4";
+                    nyearW.value = "30";
+                    capacityW.value = "2";
+                    costW.value = "1350";
+                    degradeW.value = "1.0";
+                    windFactor.value = "42";
+                    numPanelSets.value = "8";
+                    nyearS.value = "25";
+                    costS.value = "1100";
+                    capacityS.value = "250";
+                    degradeS.value = "1.0";
+                    sunHrs.value = "6.0";
+                    ptcW.value = "0.03";
+                    itcS.value = "30";
+                    ptcS.value = "0.03";
+                    break;
+                case 'mostSunButton':
+                    energyValue.value = "45.0";
+                    loanTerm.value = "1.0";
+                    interest.value = "3.0";
+                    numWindTurbines.value = "4";
+                    nyearW.value = "30";
+                    capacityW.value = "2";
+                    costW.value = "1350";
+                    degradeW.value = "1.0";
+                    windFactor.value = "42";
+                    numPanelSets.value = "8";
+                    nyearS.value = "25";
+                    costS.value = "1100";
+                    capacityS.value = "250";
+                    degradeS.value = "1.0";
+                    sunHrs.value = "8.0";
+                    ptcW.value = "0.03";
+                    itcS.value = "30";
+                    ptcS.value = "0.03";
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>

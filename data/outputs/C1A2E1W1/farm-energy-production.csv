@@ -1,10 +1,10 @@
 "export-plot data (NetLogo 6.3.0)"
 "FEWCalc_Export_Test.nlogo"
-"06/10/2024 11:39:44:587 -0500"
+"07/02/2024 14:45:45:066 -0500"
 
 "MODEL SETTINGS"
-"interest","energy_value","climate_model","capacity_s","corn_area","cost_s","degrade_s","nyear_w","#wind_turbines","loan_term","simulation_period","future_process","sun_hrs","ptc_w","soybeans_area","aquifer_thickness","wheat_area","min_aq_thickness","nyear_s","capacity_w","#panel_sets","cost_w","sg_area","wind_factor","degrade_w","itc_s","ptc_s"
-"3","38","""RCP4.5""","250","150","1750","1","30","4","1","90","""Repeat Historical""","6","0.003","200","300","200","30","25","2","8","1470","200","25","1","30","0.003"
+"interest","energy_value","capacity_s","climate_model","corn_area","cost_s","degrade_s","nyear_w","#wind_turbines","loan_term","simulation_period","future_process","aquifer_thickness","ptc_w","soybeans_area","sun_hrs","capacity_w","min_aq_thickness","wheat_area","nyear_s","#panel_sets","cost_w","sg_area","wind_factor","degrade_w","itc_s","ptc_s"
+"3","38","250","""RCP4.5""","150","1100","1","30","4","1","90","""Repeat Historical""","200","0.03","200","6","2","30","200","25","8","1350","200","25","1","30","0.03"
 
 """Farm Energy Production"""
 "x min","x max","y min","y max","autoplot?","current pen","legend open?","number of pens"

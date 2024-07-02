@@ -179,7 +179,7 @@ function drawAgricultureCharts() {
 
         Highcharts.chart('chart2', {
             title: {
-                text: "Agriculture Net Income",
+                text: "Agriculture Net Income - Year: 2008 to 2098",
             },
             xAxis: {
                 categories: netYears,
